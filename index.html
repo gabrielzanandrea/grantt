@@ -1,5 +1,7 @@
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
 <style>
 * { box-sizing: border-box; margin:0; padding:0; }
 body { font-family:'Segoe UI',sans-serif; background:#0f172a; color:#e2e8f0; padding:14px; min-height:100vh; font-size:16px; }
@@ -103,425 +105,7 @@ h1 { font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
     <button class="btn btn-primary" onclick="openModal(null)">+ Nova Tarefa</button>
   </div>
   <div class="gantt-outer">
-    <div class="gantt-container" id="ganttContainer"><div class="gantt-header-row">
-    <div class="gantt-label-col"></div>
-    <div class="gantt-months"><div class="month-label ">mar. de 26</div><div class="month-label ">mai. de 26</div><div class="month-label ">jun. de 26</div><div class="month-label ">jul. de 26</div><div class="month-label ">ago. de 26</div></div></div><div class="section-row">
-      <div class="section-label" style="color:#14b8a6">Sala de Controle</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(1)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Tapar furos e vedar sala">Tapar furos e vedar sala</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:96.32352941176471%;background:#f59e0b" data-id="1" onmouseenter="showTT(event,1)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(1)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(1)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(2)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Consertar 2 portas (vedação anti-pó)">Consertar 2 portas (vedação anti-pó)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:4.411764705882352%;background:#f59e0b" data-id="2" onmouseenter="showTT(event,2)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(2)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(2)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(3)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Trocar escada de acesso">Trocar escada de acesso</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:5.147058823529411%;background:#f59e0b" data-id="3" onmouseenter="showTT(event,3)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(3)">
-          A definir
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(3)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(4)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Comprar e instalar ar-cond. 9.000 BTUs">Comprar e instalar ar-cond. 9.000 BTUs</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:7.352941176470589%;background:#f59e0b" data-id="4" onmouseenter="showTT(event,4)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(4)">
-          A contratar
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(4)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(5)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Verificar câmeras da sala">Verificar câmeras da sala</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="5" onmouseenter="showTT(event,5)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(5)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(5)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(6)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Sala de controle pronta">✅ Sala de controle pronta</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(18.38235294117647% - 7px)" data-id="6" onmouseenter="showTT(event,6)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(6)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#f97316">Subestação &amp; Trafo</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(10)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Assinar contrato VLN + pagar entrada">Assinar contrato VLN + pagar entrada</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="10" onmouseenter="showTT(event,10)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(10)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(10)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(11)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Entrega conjunto medição indireta">Entrega conjunto medição indireta</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:13.970588235294118%;background:#f59e0b" data-id="11" onmouseenter="showTT(event,11)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(11)">
-          VLN Material Elétrico
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(11)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(12)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra e entrega do trafo 300 kVA">Compra e entrega do trafo 300 kVA</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:22.058823529411764%;background:#f59e0b" data-id="12" onmouseenter="showTT(event,12)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(12)">
-          RL Transformadores
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(12)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(13)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Obra civil subestação">Obra civil subestação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:19.11764705882353%;width:10.294117647058826%;background:#f59e0b" data-id="13" onmouseenter="showTT(event,13)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(13)">
-          Empreiteira
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(13)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(14)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação trafo (munck) + energização">Instalação trafo (munck) + energização</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:29.411764705882355%;width:5.147058823529406%;background:#f59e0b" data-id="14" onmouseenter="showTT(event,14)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(14)">
-          Vladimir Sant'Anna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(14)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(15)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Subestação 380V energizada">✅ Subestação 380V energizada</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(34.55882352941176% - 7px)" data-id="15" onmouseenter="showTT(event,15)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(15)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#22c55e">Elevador de Canecas</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(20)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Comprar materiais (motor, redutor, correia, canecas)">Comprar materiais (motor, redutor, correia, canecas)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="20" onmouseenter="showTT(event,20)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(20)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(20)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(21)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Revitalização/pintura pé e cabeça">Revitalização/pintura pé e cabeça</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:6.617647058823529%;background:#f59e0b" data-id="21" onmouseenter="showTT(event,21)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(21)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(21)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(22)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Reforma boca de limpeza do pé">Reforma boca de limpeza do pé</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:3.6764705882352935%;background:#f59e0b" data-id="22" onmouseenter="showTT(event,22)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(22)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(22)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(23)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação colunas mediais (3 módulos)">Fabricação colunas mediais (3 módulos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:12.5%;background:#f59e0b" data-id="23" onmouseenter="showTT(event,23)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(23)">
-          Metalúrgica / Interno
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(23)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(24)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Montagem estrutura + correia + canecas">Montagem estrutura + correia + canecas</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:19.11764705882353%;width:8.088235294117645%;background:#f59e0b" data-id="24" onmouseenter="showTT(event,24)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(24)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(24)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(25)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação motor + redutor + inversor">Instalação motor + redutor + inversor</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:27.205882352941174%;width:4.411764705882355%;background:#f59e0b" data-id="25" onmouseenter="showTT(event,25)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(25)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(25)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(26)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Elevador pronto para instalação">✅ Elevador pronto para instalação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(33.088235294117645% - 7px)" data-id="26" onmouseenter="showTT(event,26)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(26)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#ef4444">Painel de Dosagem</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(30)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Pagar entrada Mecavix (R$ 11.280)">Pagar entrada Mecavix (R$ 11.280)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="30" onmouseenter="showTT(event,30)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(30)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(30)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(31)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Pagar MPA parcela vencida (R$ 10.000)">Pagar MPA parcela vencida (R$ 10.000)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:0.5%;background:#f59e0b" data-id="31" onmouseenter="showTT(event,31)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(31)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(31)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(32)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Revisar orçamento Altus (Leonardo Santos)">Revisar orçamento Altus (Leonardo Santos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="32" onmouseenter="showTT(event,32)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(32)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(32)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(33)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação painel elétrico — Mecavix">Fabricação painel elétrico — Mecavix</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:29.411764705882348%;background:#f59e0b" data-id="33" onmouseenter="showTT(event,33)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(33)">
-          Mecavix
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(33)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(34)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra equipamentos Altus (PLC + módulos)">Compra equipamentos Altus (PLC + módulos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:10.294117647058824%;background:#f59e0b" data-id="34" onmouseenter="showTT(event,34)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(34)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(34)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(35)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Preparação elétrica local do painel">Preparação elétrica local do painel</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:25.735294117647058%;width:7.352941176470587%;background:#f59e0b" data-id="35" onmouseenter="showTT(event,35)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(35)">
-          MPA
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(35)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(36)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Desinstalação painel antigo">Desinstalação painel antigo</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:33.088235294117645%;width:0.7352941176470651%;background:#f59e0b" data-id="36" onmouseenter="showTT(event,36)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(36)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(36)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(37)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação painel novo (4 dias)">Instalação painel novo (4 dias)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:33.82352941176471%;width:2.205882352941174%;background:#f59e0b" data-id="37" onmouseenter="showTT(event,37)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(37)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(37)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(38)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Painel operacional">✅ Painel operacional</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(36.029411764705884% - 7px)" data-id="38" onmouseenter="showTT(event,38)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(38)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#3b82f6">Misturadores Ribbon</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(40)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Buscar fabricante p/ cópia misturador 2">Buscar fabricante p/ cópia misturador 2</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="40" onmouseenter="showTT(event,40)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(40)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(40)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(41)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Orçar 2x moto-redutores 15 cv">Orçar 2x moto-redutores 15 cv</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="41" onmouseenter="showTT(event,41)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(41)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(41)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(42)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação misturador 2">Fabricação misturador 2</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:27.205882352941178%;background:#f59e0b" data-id="42" onmouseenter="showTT(event,42)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(42)">
-          Fabricante a contratar
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(42)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(43)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra e entrega moto-redutores 15 cv">Compra e entrega moto-redutores 15 cv</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:15.441176470588236%;background:#f59e0b" data-id="43" onmouseenter="showTT(event,43)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(43)">
-          A definir
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(43)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(44)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Testes misturador 1 (já fabricado)">Testes misturador 1 (já fabricado)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:5.147058823529411%;background:#f59e0b" data-id="44" onmouseenter="showTT(event,44)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(44)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(44)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(45)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Misturadores prontos p/ instalação">✅ Misturadores prontos p/ instalação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(40.44117647058824% - 7px)" data-id="45" onmouseenter="showTT(event,45)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(45)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(46)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação misturador + elevador (mesmo dia)">Instalação misturador + elevador (mesmo dia)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:40.44117647058824%;width:1.470588235294116%;background:#f59e0b" data-id="46" onmouseenter="showTT(event,46)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(46)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(46)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#a855f7">Braço Robótico</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(50)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Acompanhar desembaraço aduaneiro">Acompanhar desembaraço aduaneiro</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:62.49999999999999%;background:#f59e0b" data-id="50" onmouseenter="showTT(event,50)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(50)">
-          Davi Batista / Trevvo
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(50)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(51)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Preparação civil área paletização">Preparação civil área paletização</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:17.647058823529413%;background:#f59e0b" data-id="51" onmouseenter="showTT(event,51)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(51)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(51)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(52)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Cabotagem + transporte até a fábrica">Cabotagem + transporte até a fábrica</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:55.14705882352941%;width:18.38235294117647%;background:#f59e0b" data-id="52" onmouseenter="showTT(event,52)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(52)">
-          Trevvo / Transportadora
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(52)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(53)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)">🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:79.41176470588235%;width:2.941176470588232%;background:#f59e0b" data-id="53" onmouseenter="showTT(event,53)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(53)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(53)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(54)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Programação, testes e start-up">Programação, testes e start-up</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:82.35294117647058%;width:5.14705882352942%;background:#f59e0b" data-id="54" onmouseenter="showTT(event,54)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(54)">
-          Yupack / Fornecedor
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(54)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(55)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="🏆 LINHA AUTOMATIZADA OPERACIONAL">🏆 LINHA AUTOMATIZADA OPERACIONAL</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(87.5% - 7px)" data-id="55" onmouseenter="showTT(event,55)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(55)" title="Remover">✕</button>
-      </div></div>
+    <div class="gantt-container" id="ganttContainer"></div>
   </div>
 </div>
 
@@ -539,20 +123,20 @@ h1 { font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
 <!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <h2 id="modalTitle">Editar Tarefa</h2>
+    <h2 id="modalTitle">Nova Tarefa</h2>
     <div class="field"><label>Frente</label>
       <select id="mProj">
         <option value="sala">🏠 Sala de Controle</option>
-        <option value="sub">🟠 Subestação &amp; Trafo</option>
+        <option value="sub">🟠 Subestação & Trafo</option>
         <option value="elevador">🟢 Elevador de Canecas</option>
         <option value="painel">🔴 Painel de Dosagem</option>
         <option value="misturador">🔵 Misturadores Ribbon</option>
         <option value="braco">🟣 Braço Robótico</option>
       </select>
     </div>
-    <div class="field"><label>Nome da Tarefa</label><input id="mName" placeholder="Ex: Fabricação misturador 2"></div>
-    <div class="field"><label>Início</label><input id="mStart" type="date"></div>
-    <div class="field"><label>Fim</label><input id="mEnd" type="date"></div>
+    <div class="field"><label>Nome da Tarefa</label><input id="mName" placeholder="Ex: Fabricação misturador 2" /></div>
+    <div class="field"><label>Início</label><input id="mStart" type="date" /></div>
+    <div class="field"><label>Fim</label><input id="mEnd" type="date" /></div>
     <div class="field"><label>Status</label>
       <select id="mStatus">
         <option value="pending">⏳ Pendente</option>
@@ -560,22 +144,17 @@ h1 { font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
         <option value="done">✅ Concluído</option>
       </select>
     </div>
-    <div class="field"><label>Responsável</label><input id="mOwner" placeholder="Nome ou empresa"></div>
+    <div class="field"><label>Responsável</label><input id="mOwner" placeholder="Nome ou empresa" /></div>
     <div class="field"><label>Observação</label><textarea id="mObs" placeholder="Detalhes, dependências..."></textarea></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger btn-sm" id="delBtn" style="" onclick="deleteTask()">Excluir</button>
+      <button class="btn btn-danger btn-sm" id="delBtn" style="display:none" onclick="deleteTask()">Excluir</button>
       <button class="btn btn-primary" onclick="saveTask()">Salvar</button>
     </div>
   </div>
 </div>
 
-<div class="tooltip" id="tooltip" style="display: none; left: 289px; top: 346px;"><strong>Tapar furos e vedar sala</strong><br>
-    <span style="color:#14b8a6">Sala de Controle</span><br>
-    📅 06/04/2026 → 10/04/2026<br>
-    🔵 Pendente<br>
-    👤 Equipe interna<br>
-    <em style="color:#64748b;font-size:0.65rem">Vedar todos os pontos de entrada de poeira no container</em></div>
+<div class="tooltip" id="tooltip"></div>
 
 <script>
 const PROJ = {
@@ -647,7 +226,17 @@ let tasks = [
   { id:55, proj:'braco', name:'🏆 LINHA AUTOMATIZADA OPERACIONAL', start:'2026-07-29', end:'2026-07-29', status:'pending', owner:'', obs:'Marco final — fábrica modernizada operando', milestone:true },
 ];
 
-let nextId = 100;
+// Persistência local
+function loadTasks() {
+  const saved = localStorage.getItem('ibrar_tasks');
+  if (saved) { try { return JSON.parse(saved); } catch(e) {} }
+  return tasks;
+}
+function persistTasks() {
+  localStorage.setItem('ibrar_tasks', JSON.stringify(tasks));
+}
+tasks = loadTasks();
+let nextId = Math.max(100, ...tasks.map(t => t.id + 1));
 let editId = null;
 let currentTab = 'gantt';
 
@@ -922,7 +511,7 @@ function saveTask() {
   } else {
     tasks.push({ id: nextId++, ...data });
   }
-  closeModal(); refresh(); saveToGitHub();
+  closeModal(); refresh(); persistTasks(); saveToGitHub();
 }
 
 function deleteTask() {
@@ -933,7 +522,7 @@ function deleteTask() {
 
 function deleteTaskById(id) {
   tasks = tasks.filter(x => x.id !== id);
-  refresh(); saveToGitHub();
+  refresh(); persistTasks(); saveToGitHub();
 }
 
 function refresh() {
@@ -965,27 +554,26 @@ function moveTT(e) {
 }
 function hideTT() { document.getElementById('tooltip').style.display = 'none'; }
 
-window.addEventListener('DOMContentLoaded', function() { renderGantt(); });
-setTimeout(function() { if (!document.getElementById('ganttContainer').innerHTML.trim()) renderGantt(); }, 300);
+// ===== GITHUB SYNC (dados.json) =====
 const GH_OWNER = 'gabrielzanandrea';
 const GH_REPO  = 'grantt';
-const GH_FILE  = 'index.html';
+const GH_FILE  = 'dados.json';
 
-let GH_TOKEN = sessionStorage.getItem('gh_token') || '';
-
-function ensureToken() {
-  if (!GH_TOKEN) {
-    GH_TOKEN = prompt('🔑 Cole seu GitHub Token para ativar o auto-save:') || '';
-    if (GH_TOKEN) sessionStorage.setItem('gh_token', GH_TOKEN);
+function getToken() {
+  let t = sessionStorage.getItem('gh_tk');
+  if (!t) {
+    t = prompt('🔑 Cole seu GitHub Token (só pedimos uma vez por sessão):') || '';
+    if (t) sessionStorage.setItem('gh_tk', t);
   }
-  return !!GH_TOKEN;
+  return t;
 }
 
 let _ghSaving = false;
 let _ghPending = false;
 
 async function saveToGitHub() {
-  if (!ensureToken()) return;
+  const GH_TOKEN = getToken();
+  if (!GH_TOKEN) return;
   if (_ghSaving) { _ghPending = true; return; }
   _ghSaving = true;
   showSaveIndicator('saving');
@@ -994,27 +582,20 @@ async function saveToGitHub() {
       `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
       { headers: { Authorization: `token ${GH_TOKEN}`, Accept: 'application/vnd.github+json' } }
     );
-    if (!metaRes.ok) {
-      const err = await metaRes.json();
-      showSaveIndicator('error', `Erro ao ler arquivo: ${err.message}`);
-      return;
-    }
-    const meta = await metaRes.json();
-    const content = btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)));
+    const sha = metaRes.ok ? (await metaRes.json()).sha : undefined;
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(tasks, null, 2))));
+    const body = { message: 'Auto-save tarefas', content };
+    if (sha) body.sha = sha;
     const putRes = await fetch(
       `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
       {
         method: 'PUT',
         headers: { Authorization: `token ${GH_TOKEN}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' },
-        body: JSON.stringify({ message: 'Auto-save via interface', content, sha: meta.sha })
+        body: JSON.stringify(body)
       }
     );
-    if (putRes.ok) {
-      showSaveIndicator('ok');
-    } else {
-      const err = await putRes.json();
-      showSaveIndicator('error', err.message || 'Erro desconhecido');
-    }
+    if (putRes.ok) showSaveIndicator('ok');
+    else { const e = await putRes.json(); showSaveIndicator('error', e.message); }
   } catch(e) {
     showSaveIndicator('error', e.message);
   } finally {
@@ -1023,28 +604,22 @@ async function saveToGitHub() {
   }
 }
 
-function showSaveIndicator(state, msg) {
-  let el = document.getElementById('_gh_indicator');
-  if (!el) {
-    el = document.createElement('div');
-    el.id = '_gh_indicator';
-    el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:7px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;z-index:9999;transition:opacity .4s;pointer-events:none;max-width:300px;';
-    document.body.appendChild(el);
-  }
-  el.style.opacity = '1';
-  if (state === 'saving') {
-    el.style.background = '#1e293b'; el.style.color = '#94a3b8'; el.style.border = '1px solid #334155';
-    el.textContent = '⏳ Salvando no GitHub...';
-  } else if (state === 'ok') {
-    el.style.background = '#14532d'; el.style.color = '#86efac'; el.style.border = '1px solid #22c55e55';
-    el.textContent = '✅ Salvo no GitHub!';
-    setTimeout(() => { el.style.opacity = '0'; }, 2500);
-  } else {
-    el.style.background = '#7f1d1d'; el.style.color = '#fca5a5'; el.style.border = '1px solid #ef444455';
-    el.textContent = '❌ ' + (msg || 'Erro ao salvar');
-    setTimeout(() => { el.style.opacity = '0'; }, 6000);
-  }
+async function loadFromGitHub() {
+  try {
+    const res = await fetch(
+      `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_FILE}?t=${Date.now()}`
+    );
+    if (res.ok) {
+      const remote = await res.json();
+      if (Array.isArray(remote) && remote.length > 0) {
+        tasks = remote;
+        nextId = Math.max(100, ...tasks.map(t => t.id + 1));
+        persistTasks();
+      }
+    }
+  } catch(e) {}
+  renderGantt();
 }
-// ===== FIM AUTO-SAVE =====
-</script>
-<div id="_gh_indicator" style="position: fixed; bottom: 16px; right: 16px; padding: 7px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; z-index: 9999; transition: opacity 0.4s; pointer-events: none; max-width: 300px; opacity: 1; background: rgb(30, 41, 59); color: rgb(148, 163, 184); border: 1px solid rgb(51, 65, 85);">⏳ Salvando no GitHub...</div></body></html>
+
+loadFromGitHub();
+// ===== FIM GITHUB SYNC =====
