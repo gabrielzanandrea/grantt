@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///C:/Users/zanan/Downloads/GANTT_FINAL_1.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style>
+* { box-sizing: border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI',sans-serif; background:#0f172a; color:#e2e8f0; padding:14px; min-height:100vh; font-size:16px; }
+h1 { font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
+.subtitle { font-size:0.9rem; color:#64748b; margin-bottom:12px; }
+
+.tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
+.tab { padding:6px 16px; border-radius:20px; font-size:0.92rem; font-weight:600; cursor:pointer; border:1px solid #334155; background:#1e293b; color:#94a3b8; transition:all .15s; }
+.tab.active { background:#6366f1; color:#fff; border-color:#6366f1; }
+
+.legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:0.85rem; color:#94a3b8; }
+.legend-dot { width:10px; height:10px; border-radius:50%; }
+
+.toolbar { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+.btn { padding:7px 16px; border:none; border-radius:6px; cursor:pointer; font-size:0.9rem; font-weight:600; }
+.btn-primary { background:#6366f1; color:#fff; }
+.btn-secondary { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
+
+/* Modal */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:100; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px; width:440px; max-width:96vw; max-height:90vh; overflow-y:auto; }
+.modal h2 { font-size:1.05rem; margin-bottom:12px; }
+.field { margin-bottom:9px; }
+.field label { display:block; font-size:0.88rem; color:#94a3b8; margin-bottom:3px; }
+.field input, .field select, .field textarea { width:100%; padding:8px 10px; background:#0f172a; border:1px solid #334155; border-radius:6px; color:#e2e8f0; font-size:0.92rem; }
+.field textarea { resize:vertical; min-height:50px; }
+.field input:focus, .field select:focus { outline:none; border-color:#6366f1; }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
+.btn-danger { background:#ef4444; color:#fff; font-size:0.85rem; padding:6px 10px; }
+.btn-sm { padding:4px 10px; font-size:0.82rem; }
+
+/* Gantt */
+.gantt-outer { overflow-x:auto; }
+.gantt-container { min-width:800px; }
+.gantt-header-row { display:flex; margin-bottom:3px; }
+.gantt-label-col { width:190px; min-width:190px; }
+.gantt-months { flex:1; display:flex; }
+.month-label { flex:1; text-align:center; font-size:0.78rem; color:#475569; border-left:1px solid #1e293b; padding:2px 0; min-width:20px; }
+.month-label.current { color:#f59e0b; font-weight:700; }
+
+.section-row { display:flex; align-items:center; margin-top:10px; margin-bottom:3px; }
+.section-label { width:210px; font-size:0.82rem; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:.05em; }
+.section-line { flex:1; height:1px; background:#1e293b; }
+
+.gantt-row { display:flex; align-items:center; margin-bottom:4px; min-height:32px; }
+.row-label { width:210px; min-width:210px; font-size:0.88rem; color:#cbd5e1; padding-right:6px; display:flex; align-items:center; gap:5px; cursor:pointer; }
+.row-label:hover .task-name-txt { text-decoration:underline; }
+.task-name-txt { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:168px; }
+.status-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.gantt-track { flex:1; height:28px; background:#0f172a; border-radius:4px; position:relative; }
+.gantt-bar { height:100%; border-radius:4px; position:absolute; opacity:.88; display:flex; align-items:center; padding:0 6px; font-size:0.72rem; font-weight:600; color:#fff; cursor:pointer; transition:opacity .15s, filter .15s; white-space:nowrap; overflow:hidden; }
+.gantt-bar:hover { opacity:1; filter:brightness(1.15); }
+.today-line { position:absolute; top:0; bottom:0; width:2px; background:#f59e0b; opacity:.9; z-index:5; pointer-events:none; }
+.dep-badge { font-size:0.7rem; background:#ef444433; color:#ef4444; border-radius:3px; padding:1px 4px; margin-left:4px; flex-shrink:0; }
+
+.del-btn { margin-left:4px; background:none; border:none; color:#475569; cursor:pointer; font-size:0.8rem; padding:0 2px; flex-shrink:0; }
+.del-btn:hover { color:#ef4444; }
+
+/* Summary */
+.summary { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.sum-card { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:9px 13px; flex:1; min-width:110px; }
+.sum-card .num { font-size:1.3rem; font-weight:700; }
+.sum-card .lbl { font-size:0.78rem; color:#64748b; margin-top:1px; }
+
+/* Milestone */
+.milestone-diamond { width:14px; height:14px; transform:rotate(45deg); position:absolute; top:6px; background:#f59e0b; z-index:3; border:2px solid #0f172a; }
+
+.tooltip { position:fixed; background:#0f172a; border:1px solid #334155; border-radius:8px; padding:8px 12px; font-size:0.82rem; pointer-events:none; z-index:200; color:#e2e8f0; display:none; max-width:240px; line-height:1.6; }
+
+/* Alert */
+.alert { background:#7f1d1d22; border:1px solid #ef444455; border-radius:8px; padding:9px 13px; margin-bottom:10px; font-size:0.88rem; color:#fca5a5; }
+</style>
+</head>
+<body>
+
+<h1>📊 Gantt — Modernização IBRAR | Fábrica de Argamassa</h1>
+<p class="subtitle">Atualizado em 06/04/2026 · Instalação do braço robótico: Sábado 18/07/2026</p>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab(&#39;gantt&#39;)">📊 Gantt</div>
+  <div class="tab" onclick="switchTab(&#39;resumo&#39;)">📋 Resumo</div>
+  <div class="tab" onclick="switchTab(&#39;checklist&#39;)">✅ Checklist Final</div>
+</div>
+
+<!-- TAB GANTT -->
+<div id="tab-gantt">
+  <div class="alert">
+    ⚠️ <strong>Atenção:</strong> Instalação do braço robótico inicia em <strong>18/07/2026 (Sábado)</strong>. Todo o restante deve estar concluído antes desta data. Compras de última hora não serão possíveis no fim de semana — planejar com antecedência!
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Concluído</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Em andamento</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Pendente</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Atrasado</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b; width:6px; height:16px; border-radius:2px"></div>Hoje</div>
+    <div class="legend-item"><div style="width:10px;height:10px;background:#f59e0b;transform:rotate(45deg)"></div>Marco</div>
+  </div>
+  <div class="toolbar">
+    <button class="btn btn-primary" onclick="openModal(null)">+ Nova Tarefa</button>
+  </div>
+  <div class="gantt-outer">
+    <div class="gantt-container" id="ganttContainer"></div>
+  </div>
+</div>
+
+<!-- TAB RESUMO -->
+<div id="tab-resumo" style="display:none">
+  <div class="summary" id="summaryCards"></div>
+  <div id="summaryDetails"></div>
+</div>
+
+<!-- TAB CHECKLIST -->
+<div id="tab-checklist" style="display:none">
+  <div id="checklistContent"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2 id="modalTitle">Nova Tarefa</h2>
+    <div class="field"><label>Frente</label>
+      <select id="mProj">
+        <option value="sala">🏠 Sala de Controle</option>
+        <option value="sub">🟠 Subestação &amp; Trafo</option>
+        <option value="elevador">🟢 Elevador de Canecas</option>
+        <option value="painel">🔴 Painel de Dosagem</option>
+        <option value="misturador">🔵 Misturadores Ribbon</option>
+        <option value="braco">🟣 Braço Robótico</option>
+      </select>
+    </div>
+    <div class="field"><label>Nome da Tarefa</label><input id="mName" placeholder="Ex: Fabricação misturador 2"></div>
+    <div class="field"><label>Início</label><input id="mStart" type="date"></div>
+    <div class="field"><label>Fim</label><input id="mEnd" type="date"></div>
+    <div class="field"><label>Status</label>
+      <select id="mStatus">
+        <option value="pending">⏳ Pendente</option>
+        <option value="inprogress">🔄 Em andamento</option>
+        <option value="done">✅ Concluído</option>
+      </select>
+    </div>
+    <div class="field"><label>Responsável</label><input id="mOwner" placeholder="Nome ou empresa"></div>
+    <div class="field"><label>Observação</label><textarea id="mObs" placeholder="Detalhes, dependências..."></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-danger btn-sm" id="delBtn" style="display:none" onclick="deleteTask()">Excluir</button>
+      <button class="btn btn-primary" onclick="saveTask()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const PROJ = {
+  sala:       { label:'Sala de Controle',     color:'#14b8a6' },
+  sub:        { label:'Subesta\u00e7\u00e3o & Trafo',      color:'#f97316' },
+  elevador:   { label:'Elevador de Canecas',  color:'#22c55e' },
+  painel:     { label:'Painel de Dosagem',    color:'#ef4444' },
+  misturador: { label:'Misturadores Ribbon',  color:'#3b82f6' },
+  braco:      { label:'Bra\u00e7o Rob\u00f3tico',         color:'#a855f7' },
+};
+
+const COLORS = { done:'#22c55e', inprogress:'#6366f1', pending:'#f59e0b', late:'#ef4444' };
+const STATUS_LBL = { done:'Conclu\u00eddo', inprogress:'Em andamento', pending:'Pendente', late:'Atrasado' };
+
+let tasks = [
+  // SALA DE CONTROLE
+  { id:1, proj:'sala', name:'Tapar furos e vedar sala', start:'2026-04-06', end:'2026-04-10', status:'pending', owner:'Equipe interna', obs:'Vedar todos os pontos de entrada de poeira no container' },
+  { id:2, proj:'sala', name:'Consertar 2 portas (vedação anti-pó)', start:'2026-04-06', end:'2026-04-12', status:'pending', owner:'Equipe interna', obs:'' },
+  { id:3, proj:'sala', name:'Trocar escada de acesso', start:'2026-04-08', end:'2026-04-15', status:'pending', owner:'A definir', obs:'' },
+  { id:4, proj:'sala', name:'Comprar e instalar ar-cond. 9.000 BTUs', start:'2026-04-08', end:'2026-04-18', status:'pending', owner:'A contratar', obs:'Sala de controle no container acima das balanças' },
+  { id:5, proj:'sala', name:'Verificar câmeras da sala', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Equipe interna', obs:'' },
+  { id:6, proj:'sala', name:'✅ Sala de controle pronta', start:'2026-04-26', end:'2026-04-26', status:'pending', owner:'', obs:'Marco — prazo: 26/04/2026', milestone:true },
+
+  // SUBESTAÇÃO
+  { id:10, proj:'sub', name:'Assinar contrato VLN + pagar entrada', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'Entrada 50% = R$ 4.060 — pagar ao assinar' },
+  { id:11, proj:'sub', name:'Entrega conjunto medição indireta', start:'2026-04-08', end:'2026-04-27', status:'pending', owner:'VLN Material Elétrico', obs:'Prazo: 15 dias após pedido' },
+  { id:12, proj:'sub', name:'Compra e entrega do trafo 300 kVA', start:'2026-04-06', end:'2026-05-06', status:'pending', owner:'RL Transformadores', obs:'Ysmaille Ferreira: (27) 99617-5574' },
+  { id:13, proj:'sub', name:'Obra civil subestação', start:'2026-04-27', end:'2026-05-11', status:'pending', owner:'Empreiteira', obs:'Preparação base, eletrocalhas, aterramento' },
+  { id:14, proj:'sub', name:'Instalação trafo (munck) + energização', start:'2026-05-11', end:'2026-05-18', status:'pending', owner:'Vladimir Sant\'Anna', obs:'Munck: R$ 800. Energização 380V.' },
+  { id:15, proj:'sub', name:'✅ Subestação 380V energizada', start:'2026-05-18', end:'2026-05-18', status:'pending', owner:'', obs:'Marco — prazo: 18/05/2026', milestone:true },
+
+  // ELEVADOR
+  { id:20, proj:'elevador', name:'Comprar materiais (motor, redutor, correia, canecas)', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Motor WEG + Redutor Zara + Vultex + Fênix Plásticos' },
+  { id:21, proj:'elevador', name:'Revitalização/pintura pé e cabeça', start:'2026-04-13', end:'2026-04-22', status:'pending', owner:'Equipe interna', obs:'48h de mão de obra' },
+  { id:22, proj:'elevador', name:'Reforma boca de limpeza do pé', start:'2026-04-13', end:'2026-04-18', status:'pending', owner:'Equipe interna', obs:'Estrutura deteriorada — refazer' },
+  { id:23, proj:'elevador', name:'Fabricação colunas mediais (3 módulos)', start:'2026-04-13', end:'2026-04-30', status:'pending', owner:'Metalúrgica / Interno', obs:'Chapas #14, cantoneiras, parafusagem' },
+  { id:24, proj:'elevador', name:'Montagem estrutura + correia + canecas', start:'2026-04-27', end:'2026-05-08', status:'pending', owner:'Equipe interna', obs:'Instalação correia Vultex inclui regulagem' },
+  { id:25, proj:'elevador', name:'Instalação motor + redutor + inversor', start:'2026-05-08', end:'2026-05-14', status:'pending', owner:'Equipe interna', obs:'Aguardar subestação para testes elétricos' },
+  { id:26, proj:'elevador', name:'✅ Elevador pronto para instalação', start:'2026-05-16', end:'2026-05-16', status:'pending', owner:'', obs:'Marco — prazo: 16/05/2026', milestone:true },
+
+  // PAINEL
+  { id:30, proj:'painel', name:'Pagar entrada Mecavix (R$ 11.280)', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'30% de R$ 37.600 — URGENTE' },
+  { id:31, proj:'painel', name:'Pagar MPA parcela vencida (R$ 10.000)', start:'2026-04-06', end:'2026-04-06', status:'pending', owner:'Gabriel', obs:'VENCIDO — pagar hoje' },
+  { id:32, proj:'painel', name:'Revisar orçamento Altus (Leonardo Santos)', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'(11) 99552-0556 — orçamento de nov/2025' },
+  { id:33, proj:'painel', name:'Fabricação painel elétrico — Mecavix', start:'2026-04-08', end:'2026-05-18', status:'pending', owner:'Mecavix', obs:'30 dias úteis após OC. (27) 3228-1928' },
+  { id:34, proj:'painel', name:'Compra equipamentos Altus (PLC + módulos)', start:'2026-04-08', end:'2026-04-22', status:'pending', owner:'Gabriel', obs:'Confirmar valores atualizados primeiro' },
+  { id:35, proj:'painel', name:'Preparação elétrica local do painel', start:'2026-05-06', end:'2026-05-16', status:'pending', owner:'MPA', obs:'Eletrocalhas, passagem de cabos' },
+  { id:36, proj:'painel', name:'Desinstalação painel antigo', start:'2026-05-16', end:'2026-05-17', status:'pending', owner:'Equipe interna', obs:'1 dia — coordenar parada produção' },
+  { id:37, proj:'painel', name:'Instalação painel novo (4 dias)', start:'2026-05-17', end:'2026-05-20', status:'pending', owner:'MPA / Mecavix', obs:'Inclui comissionamento e testes' },
+  { id:38, proj:'painel', name:'✅ Painel operacional', start:'2026-05-20', end:'2026-05-20', status:'pending', owner:'', obs:'Marco — prazo: 20/05/2026', milestone:true },
+
+  // MISTURADORES
+  { id:40, proj:'misturador', name:'Buscar fabricante p/ cópia misturador 2', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Vila Velha ou região — copiar modelo existente na fábrica' },
+  { id:41, proj:'misturador', name:'Orçar 2x moto-redutores 15 cv', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Para os 2 misturadores ribbon' },
+  { id:42, proj:'misturador', name:'Fabricação misturador 2', start:'2026-04-13', end:'2026-05-20', status:'pending', owner:'Fabricante a contratar', obs:'Cópia do modelo existente — 2.000 kg' },
+  { id:43, proj:'misturador', name:'Compra e entrega moto-redutores 15 cv', start:'2026-04-13', end:'2026-05-04', status:'pending', owner:'A definir', obs:'2 conjuntos para os misturadores ribbon' },
+  { id:44, proj:'misturador', name:'Testes misturador 1 (já fabricado)', start:'2026-04-13', end:'2026-04-20', status:'pending', owner:'Equipe interna', obs:'Validar antes da instalação definitiva' },
+  { id:45, proj:'misturador', name:'✅ Misturadores prontos p/ instalação', start:'2026-05-26', end:'2026-05-26', status:'pending', owner:'', obs:'Marco — prazo: 26/05/2026', milestone:true },
+
+  // INSTALAÇÃO CONJUNTA
+  { id:46, proj:'misturador', name:'Instalação misturador + elevador (mesmo dia)', start:'2026-05-26', end:'2026-05-28', status:'pending', owner:'Equipe interna + Munck', obs:'Ambos instalados simultaneamente — coordenar munck' },
+
+  // BRAÇO ROBÓTICO
+  { id:50, proj:'braco', name:'Acompanhar desembaraço aduaneiro', start:'2026-04-06', end:'2026-06-30', status:'pending', owner:'Davi Batista / Trevvo', obs:'(27) 99616-4351 — frete + taxas pendentes (Netuno)' },
+  { id:51, proj:'braco', name:'Preparação civil área paletização', start:'2026-04-06', end:'2026-04-30', status:'pending', owner:'Equipe interna', obs:'Piso nivelado, guarda-corpo, delimitação segurança' },
+  { id:52, proj:'braco', name:'Cabotagem + transporte até a fábrica', start:'2026-06-15', end:'2026-07-10', status:'pending', owner:'Trevvo / Transportadora', obs:'Estimar prazo com Davi Batista' },
+  { id:53, proj:'braco', name:'🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)', start:'2026-07-18', end:'2026-07-22', status:'pending', owner:'Fornecedor + Equipe', obs:'INÍCIO SÁBADO 18/07. 4-5 dias corridos. TODO O RESTANTE DEVE ESTAR PRONTO!' },
+  { id:54, proj:'braco', name:'Programação, testes e start-up', start:'2026-07-22', end:'2026-07-29', status:'pending', owner:'Yupack / Fornecedor', obs:'Treinar operadores, ajustar padrões de paletização' },
+  { id:55, proj:'braco', name:'🏆 LINHA AUTOMATIZADA OPERACIONAL', start:'2026-07-29', end:'2026-07-29', status:'pending', owner:'', obs:'Marco final — fábrica modernizada operando', milestone:true },
+];
+
+let nextId = 100;
+let editId = null;
+let currentTab = 'gantt';
+
+// Datas extremas
+const viewStart = new Date('2026-04-01');
+const viewEnd = new Date('2026-08-15');
+const today = new Date('2026-04-06');
+
+function daysBetween(a, b) { return (b - a) / 86400000; }
+function totalDays() { return daysBetween(viewStart, viewEnd); }
+
+function pct(dateStr) {
+  const d = new Date(dateStr);
+  return Math.max(0, Math.min(100, daysBetween(viewStart, d) / totalDays() * 100));
+}
+
+function effectiveStatus(t) {
+  if (t.milestone) return 'milestone';
+  if (t.status === 'done') return 'done';
+  if (new Date(t.end) < today && t.status !== 'done') return 'late';
+  return t.status;
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
+}
+
+// Month headers
+function getMonths() {
+  const months = [];
+  let d = new Date(viewStart);
+  while (d <= viewEnd) {
+    months.push(new Date(d));
+    d.setMonth(d.getMonth() + 1);
+  }
+  return months;
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  ['gantt','resumo','checklist'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t === tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    el.classList.toggle('active', ['gantt','resumo','checklist'][i] === tab);
+  });
+  if (tab === 'gantt') renderGantt();
+  if (tab === 'resumo') renderResumo();
+  if (tab === 'checklist') renderChecklist();
+}
+
+function renderGantt() {
+  const container = document.getElementById('ganttContainer');
+  const months = getMonths();
+  const todayPct = pct(today.toISOString().split('T')[0]);
+
+  let html = `<div class="gantt-header-row">
+    <div class="gantt-label-col"></div>
+    <div class="gantt-months">`;
+  months.forEach(m => {
+    const isNow = m.getMonth() === today.getMonth() && m.getFullYear() === today.getFullYear();
+    const lbl = m.toLocaleDateString('pt-BR', {month:'short', year:'2-digit'});
+    html += `<div class="month-label ${isNow?'current':''}">${lbl}</div>`;
+  });
+  html += `</div></div>`;
+
+  const projOrder = ['sala','sub','elevador','painel','misturador','braco'];
+  projOrder.forEach(pk => {
+    const proj = PROJ[pk];
+    const projTasks = tasks.filter(t => t.proj === pk);
+    if (!projTasks.length) return;
+
+    html += `<div class="section-row">
+      <div class="section-label" style="color:${proj.color}">${proj.label}</div>
+      <div class="section-line"></div>
+    </div>`;
+
+    projTasks.forEach(task => {
+      const st = effectiveStatus(task);
+      const color = task.milestone ? '#f59e0b' : (COLORS[st] || '#f59e0b');
+      const leftPct = pct(task.start);
+      const rightPct = pct(task.end);
+      const widthPct = Math.max(rightPct - leftPct, 0.5);
+
+      html += `<div class="gantt-row">
+        <div class="row-label" onclick="editTaskById(${task.id})">
+          <div class="status-dot" style="background:${color}"></div>
+          <span class="task-name-txt" title="${task.name}">${task.name}</span>
+        </div>
+        <div class="gantt-track">
+          <div class="today-line" style="left:${todayPct}%"></div>`;
+
+      if (task.milestone) {
+        html += `<div class="milestone-diamond" style="left:calc(${leftPct}% - 7px)" data-id="${task.id}"
+          onmouseenter="showTT(event,${task.id})" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div>`;
+      } else {
+        html += `<div class="gantt-bar" style="left:${leftPct}%;width:${widthPct}%;background:${color}"
+          data-id="${task.id}"
+          onmouseenter="showTT(event,${task.id})" onmousemove="moveTT(event)" onmouseleave="hideTT()"
+          onclick="editTaskById(${task.id})">
+          ${widthPct > 5 ? (task.owner || '') : ''}
+        </div>`;
+      }
+
+      html += `</div>
+        <button class="del-btn" onclick="deleteTaskById(${task.id})" title="Remover">✕</button>
+      </div>`;
+    });
+  });
+
+  container.innerHTML = html;
+}
+
+function renderResumo() {
+  const total = tasks.filter(t => !t.milestone).length;
+  const done = tasks.filter(t => t.status === 'done').length;
+  const late = tasks.filter(t => effectiveStatus(t) === 'late').length;
+  const pct2 = total ? Math.round(done/total*100) : 0;
+
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="sum-card"><div class="num" style="color:#6366f1">${total}</div><div class="lbl">Total de tarefas</div></div>
+    <div class="sum-card"><div class="num" style="color:#22c55e">${done}</div><div class="lbl">Concluídas</div></div>
+    <div class="sum-card"><div class="num" style="color:#ef4444">${late}</div><div class="lbl">Atrasadas</div></div>
+    <div class="sum-card"><div class="num" style="color:#f59e0b">${pct2}%</div><div class="lbl">Progresso</div></div>
+    <div class="sum-card"><div class="num" style="color:#a855f7">18/07</div><div class="lbl">Instalação braço (Sáb)</div></div>
+  `;
+
+  let html = '';
+  Object.entries(PROJ).forEach(([pk, proj]) => {
+    const pt = tasks.filter(t => t.proj === pk && !t.milestone);
+    if (!pt.length) return;
+    const pd = pt.filter(t => t.status === 'done').length;
+    const pp = Math.round(pd/pt.length*100);
+    html += `<div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:12px 14px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div style="width:10px;height:10px;border-radius:50%;background:${proj.color}"></div>
+        <span style="font-weight:700;font-size:0.85rem">${proj.label}</span>
+        <span style="margin-left:auto;font-size:0.7rem;color:#64748b">${pd}/${pt.length} · ${pp}%</span>
+      </div>
+      <div style="background:#0f172a;border-radius:20px;height:6px;overflow:hidden;margin-bottom:8px">
+        <div style="height:100%;width:${pp}%;background:${proj.color};border-radius:20px"></div>
+      </div>
+      ${pt.map(t=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #0f172a;font-size:0.72rem;cursor:pointer" onclick="editTaskById(${t.id})">
+        <div style="width:6px;height:6px;border-radius:50%;background:${COLORS[effectiveStatus(t)]};flex-shrink:0"></div>
+        <span style="flex:1;color:#cbd5e1">${t.name}</span>
+        <span style="color:#475569;font-size:0.65rem">${fmtDate(t.start)}→${fmtDate(t.end)}</span>
+      </div>`).join('')}
+    </div>`;
+  });
+  document.getElementById('summaryDetails').innerHTML = html;
+}
+
+function renderChecklist() {
+  const items = [
+    { ok:false, text:'Pagar MPA — R$ 10.000 VENCIDO', urgente:true },
+    { ok:false, text:'Pagar entrada Mecavix — R$ 11.280 (30% painel)', urgente:true },
+    { ok:false, text:'Ligar Altus — Leonardo Santos (11) 99552-0556', urgente:true },
+    { ok:false, text:'Ligar inversor — confirmar modelo e preço', urgente:true },
+    { ok:false, text:'Assinar contrato VLN + pagar R$ 4.060 (subestação)', urgente:false },
+    { ok:false, text:'Confirmar e-mail Mecavix sobre acordo de 02/04', urgente:false },
+    { ok:false, text:'Encontrar fabricante para cópia do misturador 2 (Vila Velha)', urgente:false },
+    { ok:false, text:'Orçar 2x moto-redutores 15 cv (misturadores)', urgente:false },
+    { ok:false, text:'Confirmar condições pagamento trafo — Ysmaille (27) 99617-5574', urgente:false },
+    { ok:false, text:'Comprar motor WEG 10 cv + Redutor Zara (ML)', urgente:false },
+    { ok:false, text:'Comprar correia Vultex (16 m)', urgente:false },
+    { ok:false, text:'Comprar 52 canecas FxP25 + parafusos (Fênix)', urgente:false },
+    { ok:false, text:'Comprar sapatas antivibratorias (ML)', urgente:false },
+    { ok:false, text:'Comprar chumbadores 3/4" x 120 mm — 3 kits (Luma)', urgente:false },
+    { ok:false, text:'Comprar aspirador Vonder APV1600 (ML)', urgente:false },
+    { ok:false, text:'Orçar workstation (teto R$ 5.000)', urgente:false },
+    { ok:false, text:'Comprar cabos RS-485 e CAN — 50 metros', urgente:false },
+    { ok:false, text:'Orçar ar-condicionado 9.000 BTUs — sala de controle', urgente:false },
+    { ok:false, text:'Tapar furos e vedar sala de controle', urgente:false },
+    { ok:false, text:'Consertar 2 portas da sala de controle', urgente:false },
+    { ok:false, text:'Trocar escada de acesso à sala de controle', urgente:false },
+    { ok:false, text:'Verificar câmeras da sala de controle', urgente:false },
+    { ok:false, text:'Orçar obra do painel (4 itens)', urgente:false },
+    { ok:false, text:'Solicitar simulação Trevvo com filmadora (USD 21.350)', urgente:false },
+    { ok:false, text:'Confirmar quantidade canecas: 52 ou 72 unidades', urgente:false },
+    { ok:false, text:'Definir fabricação colunas elevador', urgente:false },
+  ];
+
+  const saved = JSON.parse(localStorage.getItem('checklist_ibrar') || '{}');
+  items.forEach((item, i) => { if (saved[i]) item.ok = true; });
+
+  let html = `<div style="margin-bottom:12px;font-size:0.8rem;color:#94a3b8">
+    Marque os itens conforme forem sendo concluídos. O progresso é salvo automaticamente.
+  </div>`;
+
+  html += `<div style="margin-bottom:10px;font-weight:700;font-size:0.8rem;color:#ef4444">🔴 URGENTES — Fazer hoje</div>`;
+  items.filter(i => i.urgente).forEach((item, i) => {
+    const idx = items.indexOf(item);
+    html += checkItem(item, idx, saved);
+  });
+
+  html += `<div style="margin:14px 0 8px;font-weight:700;font-size:0.8rem;color:#f59e0b">🟡 Esta semana</div>`;
+  items.filter(i => !i.urgente).forEach((item) => {
+    const idx = items.indexOf(item);
+    html += checkItem(item, idx, saved);
+  });
+
+  document.getElementById('checklistContent').innerHTML = html;
+}
+
+function checkItem(item, idx, saved) {
+  const checked = saved[idx] || false;
+  return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;border-radius:7px;margin-bottom:5px;cursor:pointer;${checked?'opacity:0.5':''}" onclick="toggleCheck(${idx})">
+    <div style="width:18px;height:18px;border-radius:4px;border:2px solid ${checked?'#22c55e':'#475569'};background:${checked?'#22c55e':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      ${checked ? '<span style="color:#fff;font-size:0.7rem">✓</span>' : ''}
+    </div>
+    <span style="font-size:0.75rem;color:#cbd5e1;${checked?'text-decoration:line-through':''}">${item.text}</span>
+  </div>`;
+}
+
+function toggleCheck(idx) {
+  const saved = JSON.parse(localStorage.getItem('checklist_ibrar') || '{}');
+  saved[idx] = !saved[idx];
+  localStorage.setItem('checklist_ibrar', JSON.stringify(saved));
+  renderChecklist(); saveToGitHub();
+}
+
+// Modal
+function openModal(projKey) {
+  editId = null;
+  document.getElementById('modalTitle').textContent = 'Nova Tarefa';
+  document.getElementById('mProj').value = projKey || 'sala';
+  document.getElementById('mName').value = '';
+  document.getElementById('mStart').value = today.toISOString().split('T')[0];
+  document.getElementById('mEnd').value = today.toISOString().split('T')[0];
+  document.getElementById('mStatus').value = 'pending';
+  document.getElementById('mOwner').value = '';
+  document.getElementById('mObs').value = '';
+  document.getElementById('delBtn').style.display = 'none';
+  document.getElementById('modal').classList.add('open');
+}
+
+function editTaskById(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  editId = id;
+  document.getElementById('modalTitle').textContent = 'Editar Tarefa';
+  document.getElementById('mProj').value = t.proj;
+  document.getElementById('mName').value = t.name;
+  document.getElementById('mStart').value = t.start;
+  document.getElementById('mEnd').value = t.end;
+  document.getElementById('mStatus').value = t.status;
+  document.getElementById('mOwner').value = t.owner || '';
+  document.getElementById('mObs').value = t.obs || '';
+  document.getElementById('delBtn').style.display = '';
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+function saveTask() {
+  const name = document.getElementById('mName').value.trim();
+  const start = document.getElementById('mStart').value;
+  const end = document.getElementById('mEnd').value;
+  if (!name || !start || !end) { alert('Preencha nome, início e fim'); return; }
+  const data = {
+    proj: document.getElementById('mProj').value,
+    name, start, end,
+    status: document.getElementById('mStatus').value,
+    owner: document.getElementById('mOwner').value.trim(),
+    obs: document.getElementById('mObs').value.trim(),
+  };
+  if (editId) {
+    const idx = tasks.findIndex(x => x.id === editId);
+    tasks[idx] = { ...tasks[idx], ...data };
+  } else {
+    tasks.push({ id: nextId++, ...data });
+  }
+  closeModal(); refresh(); saveToGitHub();
+}
+
+function deleteTask() {
+  if (!confirm('Remover esta tarefa?')) return;
+  deleteTaskById(editId);
+  closeModal();
+}
+
+function deleteTaskById(id) {
+  tasks = tasks.filter(x => x.id !== id);
+  refresh(); saveToGitHub();
+}
+
+function refresh() {
+  if (currentTab === 'gantt') renderGantt();
+  if (currentTab === 'resumo') renderResumo();
+  if (currentTab === 'checklist') renderChecklist();
+}
+
+// Tooltip
+function showTT(e, id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  const proj = PROJ[t.proj];
+  const st = effectiveStatus(t);
+  const tt = document.getElementById('tooltip');
+  tt.innerHTML = `<strong>${t.name}</strong><br>
+    <span style="color:${proj.color}">${proj.label}</span><br>
+    📅 ${fmtDate(t.start)} → ${fmtDate(t.end)}<br>
+    ${t.status !== 'milestone' ? `🔵 ${STATUS_LBL[st] || st}<br>` : ''}
+    ${t.owner ? `👤 ${t.owner}<br>` : ''}
+    ${t.obs ? `<em style="color:#64748b;font-size:0.65rem">${t.obs}</em>` : ''}`;
+  tt.style.display = 'block';
+  moveTT(e);
+}
+function moveTT(e) {
+  const tt = document.getElementById('tooltip');
+  tt.style.left = (e.clientX + 14) + 'px';
+  tt.style.top = (e.clientY + 14) + 'px';
+}
+function hideTT() { document.getElementById('tooltip').style.display = 'none'; }
+
+window.addEventListener('DOMContentLoaded', function() { renderGantt(); });
+setTimeout(function() { if (!document.getElementById('ganttContainer').innerHTML.trim()) renderGantt(); }, 300);
+const GH_OWNER = 'gabrielzanandrea';
+const GH_REPO  = 'grantt';
+const GH_FILE  = 'index.html';
+
+let GH_TOKEN = sessionStorage.getItem('gh_token') || '';
+
+function ensureToken() {
+  if (!GH_TOKEN) {
+    GH_TOKEN = prompt('🔑 Cole seu GitHub Token para ativar o auto-save:') || '';
+    if (GH_TOKEN) sessionStorage.setItem('gh_token', GH_TOKEN);
+  }
+  return !!GH_TOKEN;
+}
+
+let _ghSaving = false;
+let _ghPending = false;
+
+async function saveToGitHub() {
+  if (!ensureToken()) return;
+  if (_ghSaving) { _ghPending = true; return; }
+  _ghSaving = true;
+  showSaveIndicator('saving');
+  try {
+    const metaRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+      { headers: { Authorization: `token ${GH_TOKEN}`, Accept: 'application/vnd.github+json' } }
+    );
+    if (!metaRes.ok) {
+      const err = await metaRes.json();
+      showSaveIndicator('error', `Erro ao ler arquivo: ${err.message}`);
+      return;
+    }
+    const meta = await metaRes.json();
+    const content = btoa(unescape(encodeURIComponent(document.documentElement.outerHTML)));
+    const putRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+      {
+        method: 'PUT',
+        headers: { Authorization: `token ${GH_TOKEN}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' },
+        body: JSON.stringify({ message: 'Auto-save via interface', content, sha: meta.sha })
+      }
+    );
+    if (putRes.ok) {
+      showSaveIndicator('ok');
+    } else {
+      const err = await putRes.json();
+      showSaveIndicator('error', err.message || 'Erro desconhecido');
+    }
+  } catch(e) {
+    showSaveIndicator('error', e.message);
+  } finally {
+    _ghSaving = false;
+    if (_ghPending) { _ghPending = false; saveToGitHub(); }
+  }
+}
+
+function showSaveIndicator(state, msg) {
+  let el = document.getElementById('_gh_indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = '_gh_indicator';
+    el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:7px 14px;border-radius:8px;font-size:0.8rem;font-weight:600;z-index:9999;transition:opacity .4s;pointer-events:none;max-width:300px;';
+    document.body.appendChild(el);
+  }
+  el.style.opacity = '1';
+  if (state === 'saving') {
+    el.style.background = '#1e293b'; el.style.color = '#94a3b8'; el.style.border = '1px solid #334155';
+    el.textContent = '⏳ Salvando no GitHub...';
+  } else if (state === 'ok') {
+    el.style.background = '#14532d'; el.style.color = '#86efac'; el.style.border = '1px solid #22c55e55';
+    el.textContent = '✅ Salvo no GitHub!';
+    setTimeout(() => { el.style.opacity = '0'; }, 2500);
+  } else {
+    el.style.background = '#7f1d1d'; el.style.color = '#fca5a5'; el.style.border = '1px solid #ef444455';
+    el.textContent = '❌ ' + (msg || 'Erro ao salvar');
+    setTimeout(() => { el.style.opacity = '0'; }, 6000);
+  }
+}
+// ===== FIM AUTO-SAVE =====
+</script></body></html>
