@@ -558,12 +558,22 @@ function hideTT() { document.getElementById('tooltip').style.display = 'none'; }
 const GH_OWNER = 'gabrielzanandrea';
 const GH_REPO  = 'grantt';
 const GH_FILE  = 'dados.json';
-const GH_TOKEN = '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';
+
+function getToken() {
+  let t = sessionStorage.getItem('gh_tk');
+  if (!t) {
+    t = prompt('🔑 Cole seu GitHub Token (só pedimos uma vez por sessão):') || '';
+    if (t) sessionStorage.setItem('gh_tk', t);
+  }
+  return t;
+}
 
 let _ghSaving = false;
 let _ghPending = false;
 
 async function saveToGitHub() {
+  const GH_TOKEN = getToken();
+  if (!GH_TOKEN) return;
   if (_ghSaving) { _ghPending = true; return; }
   _ghSaving = true;
   showSaveIndicator('saving');
