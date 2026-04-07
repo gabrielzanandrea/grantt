@@ -1,974 +1,513 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)file:///C:/Users/zanan/Downloads/financeiro_fabrica.html -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <style>
 * { box-sizing: border-box; margin:0; padding:0; }
-body { font-family:'Segoe UI',sans-serif; background:#0f172a; color:#e2e8f0; padding:14px; min-height:100vh; font-size:16px; }
-h1 { font-size:1.3rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
-.subtitle { font-size:0.9rem; color:#64748b; margin-bottom:12px; }
+body { font-family:'Segoe UI',sans-serif; background:#0f172a; color:#e2e8f0; padding:16px; min-height:100vh; }
+h1 { font-size:1.25rem; font-weight:700; color:#f8fafc; margin-bottom:2px; }
+.subtitle { font-size:0.85rem; color:#64748b; margin-bottom:14px; }
 
-.tabs { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
-.tab { padding:6px 16px; border-radius:20px; font-size:0.92rem; font-weight:600; cursor:pointer; border:1px solid #334155; background:#1e293b; color:#94a3b8; transition:all .15s; }
+.tabs { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+.tab { padding:6px 16px; border-radius:20px; font-size:0.88rem; font-weight:600; cursor:pointer; border:1px solid #334155; background:#1e293b; color:#94a3b8; transition:all .15s; }
 .tab.active { background:#6366f1; color:#fff; border-color:#6366f1; }
 
-.legend { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
-.legend-item { display:flex; align-items:center; gap:5px; font-size:0.85rem; color:#94a3b8; }
-.legend-dot { width:10px; height:10px; border-radius:50%; }
+.summary { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.sum-card { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:10px 14px; flex:1; min-width:120px; }
+.sum-card .num { font-size:1.3rem; font-weight:700; }
+.sum-card .lbl { font-size:0.8rem; color:#64748b; margin-top:2px; }
 
-.toolbar { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
-.btn { padding:7px 16px; border:none; border-radius:6px; cursor:pointer; font-size:0.9rem; font-weight:600; }
+.alert { background:#7f1d1d22; border:1px solid #ef444455; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:0.88rem; color:#fca5a5; }
+
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:0.88rem; min-width:600px; }
+th { background:#1e293b; color:#94a3b8; font-weight:600; padding:9px 10px; text-align:left; border-bottom:1px solid #334155; font-size:0.82rem; text-transform:uppercase; letter-spacing:.04em; }
+td { padding:9px 10px; border-bottom:1px solid #1e293b; vertical-align:middle; }
+tr:hover td { background:#1e293b55; }
+.badge { display:inline-block; padding:3px 9px; border-radius:12px; font-size:0.78rem; font-weight:700; }
+.badge-pago { background:#22c55e22; color:#22c55e; }
+.badge-urgente { background:#ef444422; color:#ef4444; }
+.badge-pendente { background:#f59e0b22; color:#f59e0b; }
+.badge-aguardando { background:#6366f122; color:#6366f1; }
+.badge-orcando { background:#64748b22; color:#94a3b8; }
+.proj-tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.78rem; font-weight:700; }
+.valor-pago { color:#22c55e; font-weight:700; }
+.valor-pendente { color:#f59e0b; font-weight:700; }
+.valor-neutro { color:#94a3b8; }
+
+.btn { padding:6px 14px; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; }
 .btn-primary { background:#6366f1; color:#fff; }
+.btn-primary:hover { background:#4f46e5; }
 .btn-secondary { background:#1e293b; color:#94a3b8; border:1px solid #334155; }
+.btn-sm { padding:4px 9px; font-size:0.8rem; }
+.btn-danger { background:#ef4444; color:#fff; }
 
-/* Modal */
 .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:100; align-items:center; justify-content:center; }
 .modal-overlay.open { display:flex; }
-.modal { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:18px; width:440px; max-width:96vw; max-height:90vh; overflow-y:auto; }
-.modal h2 { font-size:1.05rem; margin-bottom:12px; }
-.field { margin-bottom:9px; }
-.field label { display:block; font-size:0.88rem; color:#94a3b8; margin-bottom:3px; }
-.field input, .field select, .field textarea { width:100%; padding:8px 10px; background:#0f172a; border:1px solid #334155; border-radius:6px; color:#e2e8f0; font-size:0.92rem; }
-.field textarea { resize:vertical; min-height:50px; }
+.modal { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:20px; width:400px; max-width:96vw; max-height:90vh; overflow-y:auto; }
+.modal h2 { font-size:1.05rem; margin-bottom:14px; }
+.field { margin-bottom:10px; }
+.field label { display:block; font-size:0.85rem; color:#94a3b8; margin-bottom:4px; }
+.field input, .field select { width:100%; padding:8px 10px; background:#0f172a; border:1px solid #334155; border-radius:6px; color:#e2e8f0; font-size:0.88rem; }
 .field input:focus, .field select:focus { outline:none; border-color:#6366f1; }
-.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:12px; }
-.btn-danger { background:#ef4444; color:#fff; font-size:0.85rem; padding:6px 10px; }
-.btn-sm { padding:4px 10px; font-size:0.82rem; }
+.modal-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }
 
-/* Gantt */
-.gantt-outer { overflow-x:auto; }
-.gantt-container { min-width:800px; }
-.gantt-header-row { display:flex; margin-bottom:3px; }
-.gantt-label-col { width:190px; min-width:190px; }
-.gantt-months { flex:1; display:flex; }
-.month-label { flex:1; text-align:center; font-size:0.78rem; color:#475569; border-left:1px solid #1e293b; padding:2px 0; min-width:20px; }
-.month-label.current { color:#f59e0b; font-weight:700; }
+.fluxo-mes { background:#1e293b; border:1px solid #334155; border-radius:10px; padding:12px 14px; margin-bottom:10px; }
+.fluxo-mes-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.fluxo-mes-title { font-size:0.95rem; font-weight:700; }
+.fluxo-item { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid #0f172a; font-size:0.85rem; }
+.fluxo-item:last-child { border-bottom:none; }
 
-.section-row { display:flex; align-items:center; margin-top:10px; margin-bottom:3px; }
-.section-label { width:210px; font-size:0.82rem; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:.05em; }
-.section-line { flex:1; height:1px; background:#1e293b; }
+.prog-bg { background:#0f172a; border-radius:20px; height:7px; overflow:hidden; margin-top:8px; }
+.prog-fill { height:100%; border-radius:20px; }
 
-.gantt-row { display:flex; align-items:center; margin-bottom:4px; min-height:32px; }
-.row-label { width:210px; min-width:210px; font-size:0.88rem; color:#cbd5e1; padding-right:6px; display:flex; align-items:center; gap:5px; cursor:pointer; }
-.row-label:hover .task-name-txt { text-decoration:underline; }
-.task-name-txt { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:168px; }
-.status-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-.gantt-track { flex:1; height:28px; background:#0f172a; border-radius:4px; position:relative; }
-.gantt-bar { height:100%; border-radius:4px; position:absolute; opacity:.88; display:flex; align-items:center; padding:0 6px; font-size:0.72rem; font-weight:600; color:#fff; cursor:pointer; transition:opacity .15s, filter .15s; white-space:nowrap; overflow:hidden; }
-.gantt-bar:hover { opacity:1; filter:brightness(1.15); }
-.today-line { position:absolute; top:0; bottom:0; width:2px; background:#f59e0b; opacity:.9; z-index:5; pointer-events:none; }
-.dep-badge { font-size:0.7rem; background:#ef444433; color:#ef4444; border-radius:3px; padding:1px 4px; margin-left:4px; flex-shrink:0; }
-
-.del-btn { margin-left:4px; background:none; border:none; color:#475569; cursor:pointer; font-size:0.8rem; padding:0 2px; flex-shrink:0; }
-.del-btn:hover { color:#ef4444; }
-
-/* Summary */
-.summary { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
-.sum-card { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:9px 13px; flex:1; min-width:110px; }
-.sum-card .num { font-size:1.3rem; font-weight:700; }
-.sum-card .lbl { font-size:0.78rem; color:#64748b; margin-top:1px; }
-
-/* Milestone */
-.milestone-diamond { width:14px; height:14px; transform:rotate(45deg); position:absolute; top:6px; background:#f59e0b; z-index:3; border:2px solid #0f172a; }
-
-.tooltip { position:fixed; background:#0f172a; border:1px solid #334155; border-radius:8px; padding:8px 12px; font-size:0.82rem; pointer-events:none; z-index:200; color:#e2e8f0; display:none; max-width:240px; line-height:1.6; }
-
-/* Alert */
-.alert { background:#7f1d1d22; border:1px solid #ef444455; border-radius:8px; padding:9px 13px; margin-bottom:10px; font-size:0.88rem; color:#fca5a5; }
+.toolbar { display:flex; gap:8px; margin-bottom:12px; }
 </style>
 </head>
 <body>
 
-<h1>📊 Gantt — Modernização IBRAR | Fábrica de Argamassa</h1>
-<p class="subtitle">Atualizado em 06/04/2026 · Instalação do braço robótico: Sábado 18/07/2026</p>
+<h1>💰 Controle Financeiro — Modernização IBRAR</h1>
+<p class="subtitle">Painel de Dosagem · Fábrica de Argamassa · Atualizado em 06/04/2026</p>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('gantt')">📊 Gantt</div>
-  <div class="tab" onclick="switchTab('resumo')">📋 Resumo</div>
-  <div class="tab" onclick="switchTab('checklist')">✅ Checklist Final</div>
+  <div class="tab active" onclick="switchTab(&#39;pagamentos&#39;)">📋 Pagamentos</div>
+  <div class="tab" onclick="switchTab(&#39;fluxo&#39;)">📅 Fluxo de Caixa</div>
+  <div class="tab" onclick="switchTab(&#39;fornecedores&#39;)">🏢 Fornecedores</div>
 </div>
 
-<!-- TAB GANTT -->
-<div id="tab-gantt">
+<div id="tab-pagamentos">
   <div class="alert">
-    ⚠️ <strong>Atenção:</strong> Instalação do braço robótico inicia em <strong>18/07/2026 (Sábado)</strong>. Todo o restante deve estar concluído antes desta data. Compras de última hora não serão possíveis no fim de semana — planejar com antecedência!
+    ⚠️ <strong>Proposta Mecavix vencida!</strong> Emitida em 24/03/2026 (validade 7 dias). Confirmado verbalmente em 02/04 — solicitar e-mail de confirmação antes de emitir OC.
   </div>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div>Concluído</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Em andamento</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Pendente</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Atrasado</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b; width:6px; height:16px; border-radius:2px"></div>Hoje</div>
-    <div class="legend-item"><div style="width:10px;height:10px;background:#f59e0b;transform:rotate(45deg)"></div>Marco</div>
+  <div class="summary" id="summaryCards">
+    <div class="sum-card"><div class="num" style="color:#22c55e">R$ 25.000,00</div><div class="lbl">✅ Total Pago</div></div>
+    <div class="sum-card"><div class="num" style="color:#ef4444">R$ 21.280,00</div><div class="lbl">🔴 Urgente</div></div>
+    <div class="sum-card"><div class="num" style="color:#f59e0b">R$ 138.853,88</div><div class="lbl">🟡 Pendente</div></div>
+    <div class="sum-card"><div class="num" style="color:#6366f1">R$ 232.130,88</div><div class="lbl">📦 Total comprometido</div></div>
   </div>
   <div class="toolbar">
-    <button class="btn btn-primary" onclick="openModal(null)">+ Nova Tarefa</button>
+    <button class="btn btn-primary" onclick="openModal()">+ Novo Pagamento</button>
   </div>
-  <div class="gantt-outer">
-    <div class="gantt-container" id="ganttContainer"><div class="gantt-header-row">
-    <div class="gantt-label-col"></div>
-    <div class="gantt-months"><div class="month-label ">mar. de 26</div><div class="month-label ">mai. de 26</div><div class="month-label ">jun. de 26</div><div class="month-label ">jul. de 26</div><div class="month-label ">ago. de 26</div></div></div><div class="section-row">
-      <div class="section-label" style="color:#14b8a6">Sala de Controle</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(1)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Tapar furos e vedar sala">Tapar furos e vedar sala</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:96.32352941176471%;background:#f59e0b" data-id="1" onmouseenter="showTT(event,1)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(1)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(1)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(2)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Consertar 2 portas (vedação anti-pó)">Consertar 2 portas (vedação anti-pó)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:4.411764705882352%;background:#f59e0b" data-id="2" onmouseenter="showTT(event,2)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(2)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(2)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(3)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Trocar escada de acesso">Trocar escada de acesso</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:5.147058823529411%;background:#f59e0b" data-id="3" onmouseenter="showTT(event,3)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(3)">
-          A definir
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(3)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(4)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Comprar e instalar ar-cond. 9.000 BTUs">Comprar e instalar ar-cond. 9.000 BTUs</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:7.352941176470589%;background:#f59e0b" data-id="4" onmouseenter="showTT(event,4)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(4)">
-          A contratar
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(4)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(5)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Verificar câmeras da sala">Verificar câmeras da sala</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="5" onmouseenter="showTT(event,5)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(5)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(5)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(6)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Sala de controle pronta">✅ Sala de controle pronta</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(18.38235294117647% - 7px)" data-id="6" onmouseenter="showTT(event,6)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(6)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#f97316">Subestação &amp; Trafo</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(10)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Assinar contrato VLN + pagar entrada">Assinar contrato VLN + pagar entrada</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="10" onmouseenter="showTT(event,10)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(10)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(10)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(11)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Entrega conjunto medição indireta">Entrega conjunto medição indireta</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:13.970588235294118%;background:#f59e0b" data-id="11" onmouseenter="showTT(event,11)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(11)">
-          VLN Material Elétrico
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(11)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(12)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra e entrega do trafo 300 kVA">Compra e entrega do trafo 300 kVA</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:22.058823529411764%;background:#f59e0b" data-id="12" onmouseenter="showTT(event,12)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(12)">
-          RL Transformadores
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(12)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(13)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Obra civil subestação">Obra civil subestação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:19.11764705882353%;width:10.294117647058826%;background:#f59e0b" data-id="13" onmouseenter="showTT(event,13)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(13)">
-          Empreiteira
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(13)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(14)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação trafo (munck) + energização">Instalação trafo (munck) + energização</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:29.411764705882355%;width:5.147058823529406%;background:#f59e0b" data-id="14" onmouseenter="showTT(event,14)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(14)">
-          Vladimir Sant'Anna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(14)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(15)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Subestação 380V energizada">✅ Subestação 380V energizada</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(34.55882352941176% - 7px)" data-id="15" onmouseenter="showTT(event,15)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(15)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#22c55e">Elevador de Canecas</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(20)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Comprar materiais (motor, redutor, correia, canecas)">Comprar materiais (motor, redutor, correia, canecas)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="20" onmouseenter="showTT(event,20)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(20)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(20)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(21)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Revitalização/pintura pé e cabeça">Revitalização/pintura pé e cabeça</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:6.617647058823529%;background:#f59e0b" data-id="21" onmouseenter="showTT(event,21)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(21)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(21)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(22)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Reforma boca de limpeza do pé">Reforma boca de limpeza do pé</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:3.6764705882352935%;background:#f59e0b" data-id="22" onmouseenter="showTT(event,22)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(22)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(22)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(23)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação colunas mediais (3 módulos)">Fabricação colunas mediais (3 módulos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:12.5%;background:#f59e0b" data-id="23" onmouseenter="showTT(event,23)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(23)">
-          Metalúrgica / Interno
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(23)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(24)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Montagem estrutura + correia + canecas">Montagem estrutura + correia + canecas</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:19.11764705882353%;width:8.088235294117645%;background:#f59e0b" data-id="24" onmouseenter="showTT(event,24)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(24)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(24)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(25)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação motor + redutor + inversor">Instalação motor + redutor + inversor</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:27.205882352941174%;width:4.411764705882355%;background:#f59e0b" data-id="25" onmouseenter="showTT(event,25)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(25)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(25)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(26)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Elevador pronto para instalação">✅ Elevador pronto para instalação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(33.088235294117645% - 7px)" data-id="26" onmouseenter="showTT(event,26)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(26)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#ef4444">Painel de Dosagem</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(30)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Pagar entrada Mecavix (R$ 11.280)">Pagar entrada Mecavix (R$ 11.280)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="30" onmouseenter="showTT(event,30)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(30)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(30)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(31)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Pagar MPA parcela vencida (R$ 10.000)">Pagar MPA parcela vencida (R$ 10.000)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:0.5%;background:#f59e0b" data-id="31" onmouseenter="showTT(event,31)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(31)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(31)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(32)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Revisar orçamento Altus (Leonardo Santos)">Revisar orçamento Altus (Leonardo Santos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:1.4705882352941169%;background:#f59e0b" data-id="32" onmouseenter="showTT(event,32)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(32)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(32)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(33)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação painel elétrico — Mecavix">Fabricação painel elétrico — Mecavix</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:29.411764705882348%;background:#f59e0b" data-id="33" onmouseenter="showTT(event,33)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(33)">
-          Mecavix
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(33)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(34)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra equipamentos Altus (PLC + módulos)">Compra equipamentos Altus (PLC + módulos)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:5.147058823529411%;width:10.294117647058824%;background:#f59e0b" data-id="34" onmouseenter="showTT(event,34)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(34)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(34)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(35)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Preparação elétrica local do painel">Preparação elétrica local do painel</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:25.735294117647058%;width:7.352941176470587%;background:#f59e0b" data-id="35" onmouseenter="showTT(event,35)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(35)">
-          MPA
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(35)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(36)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Desinstalação painel antigo">Desinstalação painel antigo</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:33.088235294117645%;width:0.7352941176470651%;background:#f59e0b" data-id="36" onmouseenter="showTT(event,36)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(36)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(36)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(37)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação painel novo (4 dias)">Instalação painel novo (4 dias)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:33.82352941176471%;width:2.205882352941174%;background:#f59e0b" data-id="37" onmouseenter="showTT(event,37)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(37)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(37)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(38)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Painel operacional">✅ Painel operacional</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(36.029411764705884% - 7px)" data-id="38" onmouseenter="showTT(event,38)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(38)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#3b82f6">Misturadores Ribbon</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(40)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Buscar fabricante p/ cópia misturador 2">Buscar fabricante p/ cópia misturador 2</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="40" onmouseenter="showTT(event,40)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(40)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(40)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(41)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Orçar 2x moto-redutores 15 cv">Orçar 2x moto-redutores 15 cv</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:5.147058823529412%;background:#f59e0b" data-id="41" onmouseenter="showTT(event,41)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(41)">
-          Gabriel
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(41)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(42)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Fabricação misturador 2">Fabricação misturador 2</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:27.205882352941178%;background:#f59e0b" data-id="42" onmouseenter="showTT(event,42)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(42)">
-          Fabricante a contratar
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(42)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(43)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Compra e entrega moto-redutores 15 cv">Compra e entrega moto-redutores 15 cv</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:15.441176470588236%;background:#f59e0b" data-id="43" onmouseenter="showTT(event,43)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(43)">
-          A definir
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(43)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(44)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Testes misturador 1 (já fabricado)">Testes misturador 1 (já fabricado)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:8.823529411764707%;width:5.147058823529411%;background:#f59e0b" data-id="44" onmouseenter="showTT(event,44)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(44)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(44)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(45)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="✅ Misturadores prontos p/ instalação">✅ Misturadores prontos p/ instalação</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(40.44117647058824% - 7px)" data-id="45" onmouseenter="showTT(event,45)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(45)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(46)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Instalação misturador + elevador (mesmo dia)">Instalação misturador + elevador (mesmo dia)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:40.44117647058824%;width:1.470588235294116%;background:#f59e0b" data-id="46" onmouseenter="showTT(event,46)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(46)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(46)" title="Remover">✕</button>
-      </div><div class="section-row">
-      <div class="section-label" style="color:#a855f7">Braço Robótico</div>
-      <div class="section-line"></div>
-    </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(50)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Acompanhar desembaraço aduaneiro">Acompanhar desembaraço aduaneiro</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:62.49999999999999%;background:#f59e0b" data-id="50" onmouseenter="showTT(event,50)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(50)">
-          Davi Batista / Trevvo
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(50)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(51)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Preparação civil área paletização">Preparação civil área paletização</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:3.6764705882352944%;width:17.647058823529413%;background:#f59e0b" data-id="51" onmouseenter="showTT(event,51)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(51)">
-          Equipe interna
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(51)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(52)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Cabotagem + transporte até a fábrica">Cabotagem + transporte até a fábrica</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:55.14705882352941%;width:18.38235294117647%;background:#f59e0b" data-id="52" onmouseenter="showTT(event,52)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(52)">
-          Trevvo / Transportadora
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(52)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(53)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)">🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:79.41176470588235%;width:2.941176470588232%;background:#f59e0b" data-id="53" onmouseenter="showTT(event,53)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(53)">
-          
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(53)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(54)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="Programação, testes e start-up">Programação, testes e start-up</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="gantt-bar" style="left:82.35294117647058%;width:5.14705882352942%;background:#f59e0b" data-id="54" onmouseenter="showTT(event,54)" onmousemove="moveTT(event)" onmouseleave="hideTT()" onclick="editTaskById(54)">
-          Yupack / Fornecedor
-        </div></div>
-        <button class="del-btn" onclick="deleteTaskById(54)" title="Remover">✕</button>
-      </div><div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(55)">
-          <div class="status-dot" style="background:#f59e0b"></div>
-          <span class="task-name-txt" title="🏆 LINHA AUTOMATIZADA OPERACIONAL">🏆 LINHA AUTOMATIZADA OPERACIONAL</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:3.6764705882352944%"></div><div class="milestone-diamond" style="left:calc(87.5% - 7px)" data-id="55" onmouseenter="showTT(event,55)" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div></div>
-        <button class="del-btn" onclick="deleteTaskById(55)" title="Remover">✕</button>
-      </div></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Fornecedor</th>
+          <th>Descrição</th>
+          <th>Valor</th>
+          <th>Vencimento</th>
+          <th>Status</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody id="pagTbody"><tr>
+      <td><span class="proj-tag" style="background:#3b82f622;color:#3b82f6">MPA</span></td>
+      <td>Parcela paga — MPA</td>
+      <td class="valor-pago">R$ 5.000,00</td>
+      <td>01/03/2026</td>
+      <td><span class="badge badge-pago">✅ Pago</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(1)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#3b82f622;color:#3b82f6">MPA</span></td>
+      <td>Parcela URGENTE VENCIDA — MPA<br><span style="font-size:0.66rem;color:#64748b">PAGAR HOJE</span></td>
+      <td class="valor-pendente">R$ 10.000,00</td>
+      <td>06/04/2026</td>
+      <td><span class="badge badge-urgente">🔴 Urgente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(2)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#3b82f622;color:#3b82f6">MPA</span></td>
+      <td>Entregas futuras MPA<br><span style="font-size:0.66rem;color:#64748b">Vincular a entregas do equipamento</span></td>
+      <td class="valor-neutro">R$ 25.000,00</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(3)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#f9731622;color:#f97316">Mecavix</span></td>
+      <td>Entrada 30% — Painel de Mistura<br><span style="font-size:0.66rem;color:#64748b">Confirmado 02/04 — solicitar e-mail confirmação</span></td>
+      <td class="valor-pendente">R$ 11.280,00</td>
+      <td>08/04/2026</td>
+      <td><span class="badge badge-urgente">🔴 Urgente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(4)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#f9731622;color:#f97316">Mecavix</span></td>
+      <td>Saldo 70% — Painel de Mistura<br><span style="font-size:0.66rem;color:#64748b">30 DDL após entrega — prazo fab: 30 du após OC</span></td>
+      <td class="valor-neutro">R$ 26.320,00</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(5)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#a855f722;color:#a855f7">Altus</span></td>
+      <td>PLC XP340 + Módulos IO + Blueplant Lite<br><span style="font-size:0.66rem;color:#64748b">Revisar orçamento nov/2025 — ligar Leonardo (11) 99552-0556</span></td>
+      <td class="valor-neutro">R$ 18.648,84</td>
+      <td>—</td>
+      <td><span class="badge badge-aguardando">🔵 Aguardando</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(6)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#14b8a622;color:#14b8a6">Inversor</span></td>
+      <td>Inversor WEG CFW500 3cv 220V<br><span style="font-size:0.66rem;color:#64748b">Confirmar modelo e preço — ligar fornecedor</span></td>
+      <td class="valor-neutro">R$ 2.483,99</td>
+      <td>—</td>
+      <td><span class="badge badge-aguardando">🔵 Aguardando</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(7)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#ec489922;color:#ec4899">Workstation</span></td>
+      <td>Workstation (orçamento inicial)<br><span style="font-size:0.66rem;color:#64748b">Orçar outros fornecedores — teto R$ 5.000</span></td>
+      <td class="valor-neutro">R$ 6.997,00</td>
+      <td>—</td>
+      <td><span class="badge badge-orcando">⚫ Orçando</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(8)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#f59e0b22;color:#f59e0b">VLN</span></td>
+      <td>Entrada 50% — Conjunto Medição Indireta 300kVA<br><span style="font-size:0.66rem;color:#64748b">Pagar ao assinar contrato VLN</span></td>
+      <td class="valor-neutro">R$ 4.060,00</td>
+      <td>10/04/2026</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(9)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#f59e0b22;color:#f59e0b">VLN</span></td>
+      <td>Saldo 50% — Conjunto Medição Indireta<br><span style="font-size:0.66rem;color:#64748b">30 dias boleto após entrega</span></td>
+      <td class="valor-neutro">R$ 4.060,00</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(10)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#f9731622;color:#f97316">Trafo</span></td>
+      <td>Trafo 300kVA — RL Transformadores<br><span style="font-size:0.66rem;color:#64748b">Confirmar condições com Ysmaille (27) 99617-5574</span></td>
+      <td class="valor-neutro">R$ 39.500,00</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(11)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#22c55e22;color:#22c55e">Elevador</span></td>
+      <td>Motor WEG 10cv + Redutor Zara i=40<br><span style="font-size:0.66rem;color:#64748b">Comprar no Mercado Livre — confirmar flange antes</span></td>
+      <td class="valor-neutro">R$ 12.795,50</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(12)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#22c55e22;color:#22c55e">Elevador</span></td>
+      <td>Correia Vultex 16m + Canecas + Sapatas + Chumbadores<br><span style="font-size:0.66rem;color:#64748b">Vultex + Fênix Plásticos + ML</span></td>
+      <td class="valor-neutro">R$ 4.206,55</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(13)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#22c55e22;color:#22c55e">Elevador</span></td>
+      <td>Aspirador Vonder APV1600 HEPA<br><span style="font-size:0.66rem;color:#64748b">Loja Oficial Vonder — ML</span></td>
+      <td class="valor-neutro">R$ 1.779,00</td>
+      <td>—</td>
+      <td><span class="badge badge-pendente">🟡 Pendente</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(14)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#6366f122;color:#6366f1">Misturador</span></td>
+      <td>Misturador Ribbon 2.000kg (1º — JÁ PAGO)<br><span style="font-size:0.66rem;color:#64748b">Pago — já na fábrica</span></td>
+      <td class="valor-pago">R$ 20.000,00</td>
+      <td>01/03/2026</td>
+      <td><span class="badge badge-pago">✅ Pago</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(15)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#6366f122;color:#6366f1">Misturador</span></td>
+      <td>Misturador Ribbon 2.000kg (2º — a fabricar)<br><span style="font-size:0.66rem;color:#64748b">Buscar fabricante em Vila Velha — copiar modelo existente</span></td>
+      <td class="valor-neutro">R$ 40.000,00</td>
+      <td>—</td>
+      <td><span class="badge badge-orcando">⚫ Orçando</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(16)">✏️</button></td>
+    </tr><tr>
+      <td><span class="proj-tag" style="background:#6366f122;color:#6366f1">Misturador</span></td>
+      <td>2x Moto-redutores 15cv (misturadores)<br><span style="font-size:0.66rem;color:#64748b">A orçar</span></td>
+      <td class="valor-neutro">—</td>
+      <td>—</td>
+      <td><span class="badge badge-orcando">⚫ Orçando</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(17)">✏️</button></td>
+    </tr></tbody>
+    </table>
   </div>
 </div>
 
-<!-- TAB RESUMO -->
-<div id="tab-resumo" style="display:none">
-  <div class="summary" id="summaryCards"></div>
-  <div id="summaryDetails"></div>
+<div id="tab-fluxo" style="display:none">
+  <div id="fluxoContent"></div>
 </div>
 
-<!-- TAB CHECKLIST -->
-<div id="tab-checklist" style="display:none">
-  <div id="checklistContent"></div>
+<div id="tab-fornecedores" style="display:none">
+  <div id="fornContent"></div>
 </div>
 
-<!-- Modal -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <h2 id="modalTitle">Editar Tarefa</h2>
-    <div class="field"><label>Frente</label>
-      <select id="mProj">
-        <option value="sala">🏠 Sala de Controle</option>
-        <option value="sub">🟠 Subestação &amp; Trafo</option>
-        <option value="elevador">🟢 Elevador de Canecas</option>
-        <option value="painel">🔴 Painel de Dosagem</option>
-        <option value="misturador">🔵 Misturadores Ribbon</option>
-        <option value="braco">🟣 Braço Robótico</option>
+    <h2 id="modalTitle">Novo Pagamento</h2>
+    <div class="field"><label>Fornecedor</label>
+      <select id="mForn">
+        <option value="MPA">MPA</option>
+        <option value="Mecavix">Mecavix</option>
+        <option value="Altus">Altus</option>
+        <option value="Inversor">Inversor</option>
+        <option value="Workstation">Workstation</option>
+        <option value="VLN">VLN Subestação</option>
+        <option value="Trafo">Trafo RL Transformadores</option>
+        <option value="Elevador">Elevador (diversos)</option>
+        <option value="Misturador">Misturador</option>
+        <option value="Outro">Outro</option>
       </select>
     </div>
-    <div class="field"><label>Nome da Tarefa</label><input id="mName" placeholder="Ex: Fabricação misturador 2"></div>
-    <div class="field"><label>Início</label><input id="mStart" type="date"></div>
-    <div class="field"><label>Fim</label><input id="mEnd" type="date"></div>
+    <div class="field"><label>Descrição</label><input id="mDesc" placeholder="Ex: Entrada 30% painel"></div>
+    <div class="field"><label>Valor (R$)</label><input id="mValor" type="number" placeholder="0,00" step="0.01"></div>
+    <div class="field"><label>Vencimento</label><input id="mVenc" type="date"></div>
     <div class="field"><label>Status</label>
       <select id="mStatus">
-        <option value="pending">⏳ Pendente</option>
-        <option value="inprogress">🔄 Em andamento</option>
-        <option value="done">✅ Concluído</option>
+        <option value="urgente">🔴 Urgente — Pagar agora</option>
+        <option value="pendente">🟡 Pendente</option>
+        <option value="aguardando">🔵 Aguardando negociação</option>
+        <option value="orcando">⚫ Orçando</option>
+        <option value="pago">✅ Pago</option>
       </select>
     </div>
-    <div class="field"><label>Responsável</label><input id="mOwner" placeholder="Nome ou empresa"></div>
-    <div class="field"><label>Observação</label><textarea id="mObs" placeholder="Detalhes, dependências..."></textarea></div>
+    <div class="field"><label>Observação</label><input id="mObs" placeholder="Detalhes, condições, etc."></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger btn-sm" id="delBtn" style="" onclick="deleteTask()">Excluir</button>
-      <button class="btn btn-primary" onclick="saveTask()">Salvar</button>
+      <button class="btn btn-danger btn-sm" id="delBtn" style="display:none" onclick="deletePag()">Excluir</button>
+      <button class="btn btn-primary" onclick="savePag()">Salvar</button>
     </div>
   </div>
 </div>
 
-<div class="tooltip" id="tooltip" style="display: none; left: 293px; top: 330px;"><strong>Tapar furos e vedar sala</strong><br>
-    <span style="color:#14b8a6">Sala de Controle</span><br>
-    📅 06/04/2026 → 10/04/2026<br>
-    🔵 Pendente<br>
-    👤 Equipe interna<br>
-    <em style="color:#64748b;font-size:0.65rem">Vedar todos os pontos de entrada de poeira no container</em></div>
-
 <script>
-const PROJ = {
-  sala:       { label:'Sala de Controle',     color:'#14b8a6' },
-  sub:        { label:'Subesta\u00e7\u00e3o & Trafo',      color:'#f97316' },
-  elevador:   { label:'Elevador de Canecas',  color:'#22c55e' },
-  painel:     { label:'Painel de Dosagem',    color:'#ef4444' },
-  misturador: { label:'Misturadores Ribbon',  color:'#3b82f6' },
-  braco:      { label:'Bra\u00e7o Rob\u00f3tico',         color:'#a855f7' },
+const FORN_COLORS = {
+  MPA:'#3b82f6', Mecavix:'#f97316', Altus:'#a855f7',
+  Inversor:'#14b8a6', Workstation:'#ec4899', VLN:'#f59e0b',
+  Trafo:'#f97316', Elevador:'#22c55e', Misturador:'#6366f1', Outro:'#94a3b8'
 };
 
-const COLORS = { done:'#22c55e', inprogress:'#6366f1', pending:'#f59e0b', late:'#ef4444' };
-const STATUS_LBL = { done:'Conclu\u00eddo', inprogress:'Em andamento', pending:'Pendente', late:'Atrasado' };
-
-let tasks = [
-  // SALA DE CONTROLE
-  { id:1, proj:'sala', name:'Tapar furos e vedar sala', start:'2026-04-06', end:'2026-04-10', status:'pending', owner:'Equipe interna', obs:'Vedar todos os pontos de entrada de poeira no container' },
-  { id:2, proj:'sala', name:'Consertar 2 portas (vedação anti-pó)', start:'2026-04-06', end:'2026-04-12', status:'pending', owner:'Equipe interna', obs:'' },
-  { id:3, proj:'sala', name:'Trocar escada de acesso', start:'2026-04-08', end:'2026-04-15', status:'pending', owner:'A definir', obs:'' },
-  { id:4, proj:'sala', name:'Comprar e instalar ar-cond. 9.000 BTUs', start:'2026-04-08', end:'2026-04-18', status:'pending', owner:'A contratar', obs:'Sala de controle no container acima das balanças' },
-  { id:5, proj:'sala', name:'Verificar câmeras da sala', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Equipe interna', obs:'' },
-  { id:6, proj:'sala', name:'✅ Sala de controle pronta', start:'2026-04-26', end:'2026-04-26', status:'pending', owner:'', obs:'Marco — prazo: 26/04/2026', milestone:true },
-
-  // SUBESTAÇÃO
-  { id:10, proj:'sub', name:'Assinar contrato VLN + pagar entrada', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'Entrada 50% = R$ 4.060 — pagar ao assinar' },
-  { id:11, proj:'sub', name:'Entrega conjunto medição indireta', start:'2026-04-08', end:'2026-04-27', status:'pending', owner:'VLN Material Elétrico', obs:'Prazo: 15 dias após pedido' },
-  { id:12, proj:'sub', name:'Compra e entrega do trafo 300 kVA', start:'2026-04-06', end:'2026-05-06', status:'pending', owner:'RL Transformadores', obs:'Ysmaille Ferreira: (27) 99617-5574' },
-  { id:13, proj:'sub', name:'Obra civil subestação', start:'2026-04-27', end:'2026-05-11', status:'pending', owner:'Empreiteira', obs:'Preparação base, eletrocalhas, aterramento' },
-  { id:14, proj:'sub', name:'Instalação trafo (munck) + energização', start:'2026-05-11', end:'2026-05-18', status:'pending', owner:'Vladimir Sant\'Anna', obs:'Munck: R$ 800. Energização 380V.' },
-  { id:15, proj:'sub', name:'✅ Subestação 380V energizada', start:'2026-05-18', end:'2026-05-18', status:'pending', owner:'', obs:'Marco — prazo: 18/05/2026', milestone:true },
-
-  // ELEVADOR
-  { id:20, proj:'elevador', name:'Comprar materiais (motor, redutor, correia, canecas)', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Motor WEG + Redutor Zara + Vultex + Fênix Plásticos' },
-  { id:21, proj:'elevador', name:'Revitalização/pintura pé e cabeça', start:'2026-04-13', end:'2026-04-22', status:'pending', owner:'Equipe interna', obs:'48h de mão de obra' },
-  { id:22, proj:'elevador', name:'Reforma boca de limpeza do pé', start:'2026-04-13', end:'2026-04-18', status:'pending', owner:'Equipe interna', obs:'Estrutura deteriorada — refazer' },
-  { id:23, proj:'elevador', name:'Fabricação colunas mediais (3 módulos)', start:'2026-04-13', end:'2026-04-30', status:'pending', owner:'Metalúrgica / Interno', obs:'Chapas #14, cantoneiras, parafusagem' },
-  { id:24, proj:'elevador', name:'Montagem estrutura + correia + canecas', start:'2026-04-27', end:'2026-05-08', status:'pending', owner:'Equipe interna', obs:'Instalação correia Vultex inclui regulagem' },
-  { id:25, proj:'elevador', name:'Instalação motor + redutor + inversor', start:'2026-05-08', end:'2026-05-14', status:'pending', owner:'Equipe interna', obs:'Aguardar subestação para testes elétricos' },
-  { id:26, proj:'elevador', name:'✅ Elevador pronto para instalação', start:'2026-05-16', end:'2026-05-16', status:'pending', owner:'', obs:'Marco — prazo: 16/05/2026', milestone:true },
-
-  // PAINEL
-  { id:30, proj:'painel', name:'Pagar entrada Mecavix (R$ 11.280)', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'30% de R$ 37.600 — URGENTE' },
-  { id:31, proj:'painel', name:'Pagar MPA parcela vencida (R$ 10.000)', start:'2026-04-06', end:'2026-04-06', status:'pending', owner:'Gabriel', obs:'VENCIDO — pagar hoje' },
-  { id:32, proj:'painel', name:'Revisar orçamento Altus (Leonardo Santos)', start:'2026-04-06', end:'2026-04-08', status:'pending', owner:'Gabriel', obs:'(11) 99552-0556 — orçamento de nov/2025' },
-  { id:33, proj:'painel', name:'Fabricação painel elétrico — Mecavix', start:'2026-04-08', end:'2026-05-18', status:'pending', owner:'Mecavix', obs:'30 dias úteis após OC. (27) 3228-1928' },
-  { id:34, proj:'painel', name:'Compra equipamentos Altus (PLC + módulos)', start:'2026-04-08', end:'2026-04-22', status:'pending', owner:'Gabriel', obs:'Confirmar valores atualizados primeiro' },
-  { id:35, proj:'painel', name:'Preparação elétrica local do painel', start:'2026-05-06', end:'2026-05-16', status:'pending', owner:'MPA', obs:'Eletrocalhas, passagem de cabos' },
-  { id:36, proj:'painel', name:'Desinstalação painel antigo', start:'2026-05-16', end:'2026-05-17', status:'pending', owner:'Equipe interna', obs:'1 dia — coordenar parada produção' },
-  { id:37, proj:'painel', name:'Instalação painel novo (4 dias)', start:'2026-05-17', end:'2026-05-20', status:'pending', owner:'MPA / Mecavix', obs:'Inclui comissionamento e testes' },
-  { id:38, proj:'painel', name:'✅ Painel operacional', start:'2026-05-20', end:'2026-05-20', status:'pending', owner:'', obs:'Marco — prazo: 20/05/2026', milestone:true },
-
-  // MISTURADORES
-  { id:40, proj:'misturador', name:'Buscar fabricante p/ cópia misturador 2', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Vila Velha ou região — copiar modelo existente na fábrica' },
-  { id:41, proj:'misturador', name:'Orçar 2x moto-redutores 15 cv', start:'2026-04-06', end:'2026-04-13', status:'pending', owner:'Gabriel', obs:'Para os 2 misturadores ribbon' },
-  { id:42, proj:'misturador', name:'Fabricação misturador 2', start:'2026-04-13', end:'2026-05-20', status:'pending', owner:'Fabricante a contratar', obs:'Cópia do modelo existente — 2.000 kg' },
-  { id:43, proj:'misturador', name:'Compra e entrega moto-redutores 15 cv', start:'2026-04-13', end:'2026-05-04', status:'pending', owner:'A definir', obs:'2 conjuntos para os misturadores ribbon' },
-  { id:44, proj:'misturador', name:'Testes misturador 1 (já fabricado)', start:'2026-04-13', end:'2026-04-20', status:'pending', owner:'Equipe interna', obs:'Validar antes da instalação definitiva' },
-  { id:45, proj:'misturador', name:'✅ Misturadores prontos p/ instalação', start:'2026-05-26', end:'2026-05-26', status:'pending', owner:'', obs:'Marco — prazo: 26/05/2026', milestone:true },
-
-  // INSTALAÇÃO CONJUNTA
-  { id:46, proj:'misturador', name:'Instalação misturador + elevador (mesmo dia)', start:'2026-05-26', end:'2026-05-28', status:'pending', owner:'Equipe interna + Munck', obs:'Ambos instalados simultaneamente — coordenar munck' },
-
-  // BRAÇO ROBÓTICO
-  { id:50, proj:'braco', name:'Acompanhar desembaraço aduaneiro', start:'2026-04-06', end:'2026-06-30', status:'pending', owner:'Davi Batista / Trevvo', obs:'(27) 99616-4351 — frete + taxas pendentes (Netuno)' },
-  { id:51, proj:'braco', name:'Preparação civil área paletização', start:'2026-04-06', end:'2026-04-30', status:'pending', owner:'Equipe interna', obs:'Piso nivelado, guarda-corpo, delimitação segurança' },
-  { id:52, proj:'braco', name:'Cabotagem + transporte até a fábrica', start:'2026-06-15', end:'2026-07-10', status:'pending', owner:'Trevvo / Transportadora', obs:'Estimar prazo com Davi Batista' },
-  { id:53, proj:'braco', name:'🚨 INSTALAÇÃO BRAÇO + LINHA COMPLETA (Sáb)', start:'2026-07-18', end:'2026-07-22', status:'pending', owner:'Fornecedor + Equipe', obs:'INÍCIO SÁBADO 18/07. 4-5 dias corridos. TODO O RESTANTE DEVE ESTAR PRONTO!' },
-  { id:54, proj:'braco', name:'Programação, testes e start-up', start:'2026-07-22', end:'2026-07-29', status:'pending', owner:'Yupack / Fornecedor', obs:'Treinar operadores, ajustar padrões de paletização' },
-  { id:55, proj:'braco', name:'🏆 LINHA AUTOMATIZADA OPERACIONAL', start:'2026-07-29', end:'2026-07-29', status:'pending', owner:'', obs:'Marco final — fábrica modernizada operando', milestone:true },
+let pagamentos = [
+  { id:1,  forn:'MPA',        desc:'Parcela paga — MPA',                         valor:5000,     venc:'2026-03-01', status:'pago',       obs:'' },
+  { id:2,  forn:'MPA',        desc:'Parcela URGENTE VENCIDA — MPA',               valor:10000,    venc:'2026-04-06', status:'urgente',    obs:'PAGAR HOJE' },
+  { id:3,  forn:'MPA',        desc:'Entregas futuras MPA',                        valor:25000,    venc:'',           status:'pendente',   obs:'Vincular a entregas do equipamento' },
+  { id:4,  forn:'Mecavix',    desc:'Entrada 30% — Painel de Mistura',             valor:11280,    venc:'2026-04-08', status:'urgente',    obs:'Confirmado 02/04 — solicitar e-mail confirmação' },
+  { id:5,  forn:'Mecavix',    desc:'Saldo 70% — Painel de Mistura',               valor:26320,    venc:'',           status:'pendente',   obs:'30 DDL após entrega — prazo fab: 30 du após OC' },
+  { id:6,  forn:'Altus',      desc:'PLC XP340 + Módulos IO + Blueplant Lite',     valor:18648.84, venc:'',           status:'aguardando', obs:'Revisar orçamento nov/2025 — ligar Leonardo (11) 99552-0556' },
+  { id:7,  forn:'Inversor',   desc:'Inversor WEG CFW500 3cv 220V',                valor:2483.99,  venc:'',           status:'aguardando', obs:'Confirmar modelo e preço — ligar fornecedor' },
+  { id:8,  forn:'Workstation',desc:'Workstation (orçamento inicial)',              valor:6997,     venc:'',           status:'orcando',    obs:'Orçar outros fornecedores — teto R$ 5.000' },
+  { id:9,  forn:'VLN',        desc:'Entrada 50% — Conjunto Medição Indireta 300kVA', valor:4060,  venc:'2026-04-10', status:'pendente',   obs:'Pagar ao assinar contrato VLN' },
+  { id:10, forn:'VLN',        desc:'Saldo 50% — Conjunto Medição Indireta',       valor:4060,     venc:'',           status:'pendente',   obs:'30 dias boleto após entrega' },
+  { id:11, forn:'Trafo',      desc:'Trafo 300kVA — RL Transformadores',           valor:39500,    venc:'',           status:'pendente',   obs:'Confirmar condições com Ysmaille (27) 99617-5574' },
+  { id:12, forn:'Elevador',   desc:'Motor WEG 10cv + Redutor Zara i=40',          valor:12795.50, venc:'',           status:'pendente',   obs:'Comprar no Mercado Livre — confirmar flange antes' },
+  { id:13, forn:'Elevador',   desc:'Correia Vultex 16m + Canecas + Sapatas + Chumbadores', valor:4206.55, venc:'', status:'pendente',    obs:'Vultex + Fênix Plásticos + ML' },
+  { id:14, forn:'Elevador',   desc:'Aspirador Vonder APV1600 HEPA',               valor:1779,     venc:'',           status:'pendente',   obs:'Loja Oficial Vonder — ML' },
+  { id:15, forn:'Misturador', desc:'Misturador Ribbon 2.000kg (1º — JÁ PAGO)',   valor:20000,    venc:'2026-03-01', status:'pago',       obs:'Pago — já na fábrica' },
+  { id:16, forn:'Misturador', desc:'Misturador Ribbon 2.000kg (2º — a fabricar)', valor:40000,   venc:'',           status:'orcando',    obs:'Buscar fabricante em Vila Velha — copiar modelo existente' },
+  { id:17, forn:'Misturador', desc:'2x Moto-redutores 15cv (misturadores)',       valor:0,        venc:'',           status:'orcando',    obs:'A orçar' },
 ];
 
-let nextId = 100;
+// Persistência local
+function loadPagamentos() {
+  const saved = localStorage.getItem('ibrar_pagamentos');
+  if (saved) { try { return JSON.parse(saved); } catch(e) {} }
+  return pagamentos;
+}
+function persistPagamentos() {
+  localStorage.setItem('ibrar_pagamentos', JSON.stringify(pagamentos));
+}
+pagamentos = loadPagamentos();
+let nextId = Math.max(20, ...pagamentos.map(p => p.id + 1));
 let editId = null;
-let currentTab = 'gantt';
+let currentTab = 'pagamentos';
 
-// Datas extremas
-const viewStart = new Date('2026-04-01');
-const viewEnd = new Date('2026-08-15');
-const today = new Date('2026-04-06');
+const STATUS_META = {
+  pago:       { label:'✅ Pago',       cls:'badge-pago' },
+  urgente:    { label:'🔴 Urgente',    cls:'badge-urgente' },
+  pendente:   { label:'🟡 Pendente',   cls:'badge-pendente' },
+  aguardando: { label:'🔵 Aguardando', cls:'badge-aguardando' },
+  orcando:    { label:'⚫ Orçando',    cls:'badge-orcando' },
+};
 
-function daysBetween(a, b) { return (b - a) / 86400000; }
-function totalDays() { return daysBetween(viewStart, viewEnd); }
-
-function pct(dateStr) {
-  const d = new Date(dateStr);
-  return Math.max(0, Math.min(100, daysBetween(viewStart, d) / totalDays() * 100));
-}
-
-function effectiveStatus(t) {
-  if (t.milestone) return 'milestone';
-  if (t.status === 'done') return 'done';
-  if (new Date(t.end) < today && t.status !== 'done') return 'late';
-  return t.status;
-}
-
-function fmtDate(d) {
-  if (!d) return '';
-  const [y,m,day] = d.split('-');
-  return `${day}/${m}/${y}`;
-}
-
-// Month headers
-function getMonths() {
-  const months = [];
-  let d = new Date(viewStart);
-  while (d <= viewEnd) {
-    months.push(new Date(d));
-    d.setMonth(d.getMonth() + 1);
-  }
-  return months;
-}
+function fmtVal(v) { return v > 0 ? 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—'; }
+function fmtDate(d) { if(!d) return '—'; const [y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
 
 function switchTab(tab) {
   currentTab = tab;
-  ['gantt','resumo','checklist'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t === tab ? '' : 'none';
+  ['pagamentos','fluxo','fornecedores'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t===tab?'':'none';
   });
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', ['gantt','resumo','checklist'][i] === tab);
+  document.querySelectorAll('.tab').forEach((el,i) => {
+    el.classList.toggle('active', ['pagamentos','fluxo','fornecedores'][i]===tab);
   });
-  if (tab === 'gantt') renderGantt();
-  if (tab === 'resumo') renderResumo();
-  if (tab === 'checklist') renderChecklist();
+  if(tab==='pagamentos') renderPagamentos();
+  if(tab==='fluxo') renderFluxo();
+  if(tab==='fornecedores') renderFornecedores();
 }
 
-function renderGantt() {
-  const container = document.getElementById('ganttContainer');
-  const months = getMonths();
-  const todayPct = pct(today.toISOString().split('T')[0]);
-
-  let html = `<div class="gantt-header-row">
-    <div class="gantt-label-col"></div>
-    <div class="gantt-months">`;
-  months.forEach(m => {
-    const isNow = m.getMonth() === today.getMonth() && m.getFullYear() === today.getFullYear();
-    const lbl = m.toLocaleDateString('pt-BR', {month:'short', year:'2-digit'});
-    html += `<div class="month-label ${isNow?'current':''}">${lbl}</div>`;
-  });
-  html += `</div></div>`;
-
-  const projOrder = ['sala','sub','elevador','painel','misturador','braco'];
-  projOrder.forEach(pk => {
-    const proj = PROJ[pk];
-    const projTasks = tasks.filter(t => t.proj === pk);
-    if (!projTasks.length) return;
-
-    html += `<div class="section-row">
-      <div class="section-label" style="color:${proj.color}">${proj.label}</div>
-      <div class="section-line"></div>
-    </div>`;
-
-    projTasks.forEach(task => {
-      const st = effectiveStatus(task);
-      const color = task.milestone ? '#f59e0b' : (COLORS[st] || '#f59e0b');
-      const leftPct = pct(task.start);
-      const rightPct = pct(task.end);
-      const widthPct = Math.max(rightPct - leftPct, 0.5);
-
-      html += `<div class="gantt-row">
-        <div class="row-label" onclick="editTaskById(${task.id})">
-          <div class="status-dot" style="background:${color}"></div>
-          <span class="task-name-txt" title="${task.name}">${task.name}</span>
-        </div>
-        <div class="gantt-track">
-          <div class="today-line" style="left:${todayPct}%"></div>`;
-
-      if (task.milestone) {
-        html += `<div class="milestone-diamond" style="left:calc(${leftPct}% - 7px)" data-id="${task.id}"
-          onmouseenter="showTT(event,${task.id})" onmousemove="moveTT(event)" onmouseleave="hideTT()"></div>`;
-      } else {
-        html += `<div class="gantt-bar" style="left:${leftPct}%;width:${widthPct}%;background:${color}"
-          data-id="${task.id}"
-          onmouseenter="showTT(event,${task.id})" onmousemove="moveTT(event)" onmouseleave="hideTT()"
-          onclick="editTaskById(${task.id})">
-          ${widthPct > 5 ? (task.owner || '') : ''}
-        </div>`;
-      }
-
-      html += `</div>
-        <button class="del-btn" onclick="deleteTaskById(${task.id})" title="Remover">✕</button>
-      </div>`;
-    });
-  });
-
-  container.innerHTML = html;
-}
-
-function renderResumo() {
-  const total = tasks.filter(t => !t.milestone).length;
-  const done = tasks.filter(t => t.status === 'done').length;
-  const late = tasks.filter(t => effectiveStatus(t) === 'late').length;
-  const pct2 = total ? Math.round(done/total*100) : 0;
+function renderPagamentos() {
+  const real = pagamentos.filter(p=>p.status!=='info');
+  const pago = real.filter(p=>p.status==='pago').reduce((a,p)=>a+p.valor,0);
+  const urgente = real.filter(p=>p.status==='urgente').reduce((a,p)=>a+p.valor,0);
+  const pendente = real.filter(p=>['pendente','aguardando'].includes(p.status)).reduce((a,p)=>a+p.valor,0);
+  const total = real.reduce((a,p)=>a+p.valor,0);
 
   document.getElementById('summaryCards').innerHTML = `
-    <div class="sum-card"><div class="num" style="color:#6366f1">${total}</div><div class="lbl">Total de tarefas</div></div>
-    <div class="sum-card"><div class="num" style="color:#22c55e">${done}</div><div class="lbl">Concluídas</div></div>
-    <div class="sum-card"><div class="num" style="color:#ef4444">${late}</div><div class="lbl">Atrasadas</div></div>
-    <div class="sum-card"><div class="num" style="color:#f59e0b">${pct2}%</div><div class="lbl">Progresso</div></div>
-    <div class="sum-card"><div class="num" style="color:#a855f7">18/07</div><div class="lbl">Instalação braço (Sáb)</div></div>
+    <div class="sum-card"><div class="num" style="color:#22c55e">${fmtVal(pago)}</div><div class="lbl">✅ Total Pago</div></div>
+    <div class="sum-card"><div class="num" style="color:#ef4444">${fmtVal(urgente)}</div><div class="lbl">🔴 Urgente</div></div>
+    <div class="sum-card"><div class="num" style="color:#f59e0b">${fmtVal(pendente)}</div><div class="lbl">🟡 Pendente</div></div>
+    <div class="sum-card"><div class="num" style="color:#6366f1">${fmtVal(total)}</div><div class="lbl">📦 Total comprometido</div></div>
   `;
 
+  const color = f => FORN_COLORS[f]||'#94a3b8';
+  document.getElementById('pagTbody').innerHTML = pagamentos.map(p => {
+    const sm = STATUS_META[p.status]||STATUS_META.pendente;
+    const valClass = p.status==='pago'?'valor-pago':p.status==='urgente'?'valor-pendente':'valor-neutro';
+    return `<tr>
+      <td><span class="proj-tag" style="background:${color(p.forn)}22;color:${color(p.forn)}">${p.forn}</span></td>
+      <td>${p.desc}${p.obs?'<br><span style="font-size:0.66rem;color:#64748b">'+p.obs+'</span>':''}</td>
+      <td class="${valClass}">${fmtVal(p.valor)}</td>
+      <td>${fmtDate(p.venc)}</td>
+      <td><span class="badge ${sm.cls}">${sm.label}</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="editPag(${p.id})">✏️</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderFluxo() {
+  const meses = {};
+  pagamentos.filter(p=>p.venc && p.status!=='info').forEach(p => {
+    const key = p.venc.substring(0,7);
+    if(!meses[key]) meses[key]={key,pags:[]};
+    meses[key].pags.push(p);
+  });
+  const semData = pagamentos.filter(p=>!p.venc && !['info','pago','orcando'].includes(p.status));
+
   let html = '';
-  Object.entries(PROJ).forEach(([pk, proj]) => {
-    const pt = tasks.filter(t => t.proj === pk && !t.milestone);
-    if (!pt.length) return;
-    const pd = pt.filter(t => t.status === 'done').length;
-    const pp = Math.round(pd/pt.length*100);
-    html += `<div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:12px 14px;margin-bottom:10px">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-        <div style="width:10px;height:10px;border-radius:50%;background:${proj.color}"></div>
-        <span style="font-weight:700;font-size:0.85rem">${proj.label}</span>
-        <span style="margin-left:auto;font-size:0.7rem;color:#64748b">${pd}/${pt.length} · ${pp}%</span>
+  Object.values(meses).sort((a,b)=>a.key.localeCompare(b.key)).forEach(m => {
+    const total = m.pags.reduce((a,p)=>a+p.valor,0);
+    const [y,mo] = m.key.split('-');
+    const nomeMes = new Date(+y,+mo-1,1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'});
+    html += `<div class="fluxo-mes">
+      <div class="fluxo-mes-header">
+        <div class="fluxo-mes-title">📅 ${nomeMes.charAt(0).toUpperCase()+nomeMes.slice(1)}</div>
+        <div class="fluxo-mes-title" style="color:#f59e0b">${fmtVal(total)}</div>
       </div>
-      <div style="background:#0f172a;border-radius:20px;height:6px;overflow:hidden;margin-bottom:8px">
-        <div style="height:100%;width:${pp}%;background:${proj.color};border-radius:20px"></div>
-      </div>
-      ${pt.map(t=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #0f172a;font-size:0.72rem;cursor:pointer" onclick="editTaskById(${t.id})">
-        <div style="width:6px;height:6px;border-radius:50%;background:${COLORS[effectiveStatus(t)]};flex-shrink:0"></div>
-        <span style="flex:1;color:#cbd5e1">${t.name}</span>
-        <span style="color:#475569;font-size:0.65rem">${fmtDate(t.start)}→${fmtDate(t.end)}</span>
-      </div>`).join('')}
+      ${m.pags.map(p=>{
+        const sm=STATUS_META[p.status]||STATUS_META.pendente;
+        const c=FORN_COLORS[p.forn]||'#94a3b8';
+        return `<div class="fluxo-item">
+          <span class="proj-tag" style="background:${c}22;color:${c}">${p.forn}</span>
+          <span style="flex:1">${p.desc}</span>
+          <span class="badge ${sm.cls}">${sm.label}</span>
+          <span style="font-weight:700;margin-left:8px">${fmtVal(p.valor)}</span>
+        </div>`;
+      }).join('')}
     </div>`;
   });
-  document.getElementById('summaryDetails').innerHTML = html;
+
+  if(semData.length) {
+    html += `<div class="fluxo-mes"><div class="fluxo-mes-header"><div class="fluxo-mes-title">📋 Sem data definida</div></div>
+      ${semData.map(p=>{
+        const c=FORN_COLORS[p.forn]||'#94a3b8';
+        const sm=STATUS_META[p.status]||STATUS_META.pendente;
+        return `<div class="fluxo-item">
+          <span class="proj-tag" style="background:${c}22;color:${c}">${p.forn}</span>
+          <span style="flex:1">${p.desc}</span>
+          <span class="badge ${sm.cls}">${sm.label}</span>
+          <span style="font-weight:700;margin-left:8px">${fmtVal(p.valor)}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  document.getElementById('fluxoContent').innerHTML = html || '<div style="color:#475569;padding:20px;text-align:center">Nenhum pagamento com data definida.</div>';
 }
 
-function renderChecklist() {
-  const items = [
-    { ok:false, text:'Pagar MPA — R$ 10.000 VENCIDO', urgente:true },
-    { ok:false, text:'Pagar entrada Mecavix — R$ 11.280 (30% painel)', urgente:true },
-    { ok:false, text:'Ligar Altus — Leonardo Santos (11) 99552-0556', urgente:true },
-    { ok:false, text:'Ligar inversor — confirmar modelo e preço', urgente:true },
-    { ok:false, text:'Assinar contrato VLN + pagar R$ 4.060 (subestação)', urgente:false },
-    { ok:false, text:'Confirmar e-mail Mecavix sobre acordo de 02/04', urgente:false },
-    { ok:false, text:'Encontrar fabricante para cópia do misturador 2 (Vila Velha)', urgente:false },
-    { ok:false, text:'Orçar 2x moto-redutores 15 cv (misturadores)', urgente:false },
-    { ok:false, text:'Confirmar condições pagamento trafo — Ysmaille (27) 99617-5574', urgente:false },
-    { ok:false, text:'Comprar motor WEG 10 cv + Redutor Zara (ML)', urgente:false },
-    { ok:false, text:'Comprar correia Vultex (16 m)', urgente:false },
-    { ok:false, text:'Comprar 52 canecas FxP25 + parafusos (Fênix)', urgente:false },
-    { ok:false, text:'Comprar sapatas antivibratorias (ML)', urgente:false },
-    { ok:false, text:'Comprar chumbadores 3/4" x 120 mm — 3 kits (Luma)', urgente:false },
-    { ok:false, text:'Comprar aspirador Vonder APV1600 (ML)', urgente:false },
-    { ok:false, text:'Orçar workstation (teto R$ 5.000)', urgente:false },
-    { ok:false, text:'Comprar cabos RS-485 e CAN — 50 metros', urgente:false },
-    { ok:false, text:'Orçar ar-condicionado 9.000 BTUs — sala de controle', urgente:false },
-    { ok:false, text:'Tapar furos e vedar sala de controle', urgente:false },
-    { ok:false, text:'Consertar 2 portas da sala de controle', urgente:false },
-    { ok:false, text:'Trocar escada de acesso à sala de controle', urgente:false },
-    { ok:false, text:'Verificar câmeras da sala de controle', urgente:false },
-    { ok:false, text:'Orçar obra do painel (4 itens)', urgente:false },
-    { ok:false, text:'Solicitar simulação Trevvo com filmadora (USD 21.350)', urgente:false },
-    { ok:false, text:'Confirmar quantidade canecas: 52 ou 72 unidades', urgente:false },
-    { ok:false, text:'Definir fabricação colunas elevador', urgente:false },
-  ];
-
-  const saved = JSON.parse(localStorage.getItem('checklist_ibrar') || '{}');
-  items.forEach((item, i) => { if (saved[i]) item.ok = true; });
-
-  let html = `<div style="margin-bottom:12px;font-size:0.8rem;color:#94a3b8">
-    Marque os itens conforme forem sendo concluídos. O progresso é salvo automaticamente.
-  </div>`;
-
-  html += `<div style="margin-bottom:10px;font-weight:700;font-size:0.8rem;color:#ef4444">🔴 URGENTES — Fazer hoje</div>`;
-  items.filter(i => i.urgente).forEach((item, i) => {
-    const idx = items.indexOf(item);
-    html += checkItem(item, idx, saved);
+function renderFornecedores() {
+  const fornMap = {};
+  pagamentos.forEach(p=>{
+    if(!fornMap[p.forn]) fornMap[p.forn]={forn:p.forn,pago:0,pendente:0,orcando:0};
+    if(p.status==='pago') fornMap[p.forn].pago+=p.valor;
+    else if(p.status==='orcando') fornMap[p.forn].orcando+=p.valor;
+    else fornMap[p.forn].pendente+=p.valor;
   });
 
-  html += `<div style="margin:14px 0 8px;font-weight:700;font-size:0.8rem;color:#f59e0b">🟡 Esta semana</div>`;
-  items.filter(i => !i.urgente).forEach((item) => {
-    const idx = items.indexOf(item);
-    html += checkItem(item, idx, saved);
+  let html = '<div style="display:flex;flex-direction:column;gap:10px">';
+  Object.values(fornMap).forEach(f=>{
+    const c=FORN_COLORS[f.forn]||'#94a3b8';
+    const total=f.pago+f.pendente+f.orcando;
+    const pct=total?Math.round(f.pago/total*100):0;
+    html+=`<div style="background:#1e293b;border:1px solid #334155;border-radius:10px;padding:12px 16px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <div style="width:11px;height:11px;border-radius:50%;background:${c}"></div>
+        <span style="font-weight:700;font-size:0.88rem">${f.forn}</span>
+        <span style="margin-left:auto;font-size:0.72rem;color:#64748b">${pct}% pago</span>
+      </div>
+      <div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div>
+      <div style="display:flex;gap:14px;margin-top:8px;font-size:0.72rem">
+        <span style="color:#22c55e">✅ ${fmtVal(f.pago)}</span>
+        <span style="color:#f59e0b">🟡 ${fmtVal(f.pendente)}</span>
+        ${f.orcando?`<span style="color:#64748b">⚫ ${fmtVal(f.orcando)}</span>`:''}
+        <span style="color:#94a3b8;margin-left:auto">Total: ${fmtVal(total)}</span>
+      </div>
+    </div>`;
   });
-
-  document.getElementById('checklistContent').innerHTML = html;
+  html+='</div>';
+  document.getElementById('fornContent').innerHTML=html;
 }
 
-function checkItem(item, idx, saved) {
-  const checked = saved[idx] || false;
-  return `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:#1e293b;border:1px solid #334155;border-radius:7px;margin-bottom:5px;cursor:pointer;${checked?'opacity:0.5':''}" onclick="toggleCheck(${idx})">
-    <div style="width:18px;height:18px;border-radius:4px;border:2px solid ${checked?'#22c55e':'#475569'};background:${checked?'#22c55e':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-      ${checked ? '<span style="color:#fff;font-size:0.7rem">✓</span>' : ''}
-    </div>
-    <span style="font-size:0.75rem;color:#cbd5e1;${checked?'text-decoration:line-through':''}">${item.text}</span>
-  </div>`;
-}
-
-function toggleCheck(idx) {
-  const saved = JSON.parse(localStorage.getItem('checklist_ibrar') || '{}');
-  saved[idx] = !saved[idx];
-  localStorage.setItem('checklist_ibrar', JSON.stringify(saved));
-  renderChecklist(); saveToGitHub();
-}
-
-// Modal
-function openModal(projKey) {
-  editId = null;
-  document.getElementById('modalTitle').textContent = 'Nova Tarefa';
-  document.getElementById('mProj').value = projKey || 'sala';
-  document.getElementById('mName').value = '';
-  document.getElementById('mStart').value = today.toISOString().split('T')[0];
-  document.getElementById('mEnd').value = today.toISOString().split('T')[0];
-  document.getElementById('mStatus').value = 'pending';
-  document.getElementById('mOwner').value = '';
-  document.getElementById('mObs').value = '';
-  document.getElementById('delBtn').style.display = 'none';
+function openModal() {
+  editId=null;
+  document.getElementById('modalTitle').textContent='Novo Pagamento';
+  document.getElementById('mForn').value='MPA';
+  document.getElementById('mDesc').value='';
+  document.getElementById('mValor').value='';
+  document.getElementById('mVenc').value='';
+  document.getElementById('mStatus').value='pendente';
+  document.getElementById('mObs').value='';
+  document.getElementById('delBtn').style.display='none';
   document.getElementById('modal').classList.add('open');
 }
 
-function editTaskById(id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  editId = id;
-  document.getElementById('modalTitle').textContent = 'Editar Tarefa';
-  document.getElementById('mProj').value = t.proj;
-  document.getElementById('mName').value = t.name;
-  document.getElementById('mStart').value = t.start;
-  document.getElementById('mEnd').value = t.end;
-  document.getElementById('mStatus').value = t.status;
-  document.getElementById('mOwner').value = t.owner || '';
-  document.getElementById('mObs').value = t.obs || '';
-  document.getElementById('delBtn').style.display = '';
+function editPag(id) {
+  const p=pagamentos.find(x=>x.id===id);
+  editId=id;
+  document.getElementById('modalTitle').textContent='Editar Pagamento';
+  document.getElementById('mForn').value=p.forn;
+  document.getElementById('mDesc').value=p.desc;
+  document.getElementById('mValor').value=p.valor;
+  document.getElementById('mVenc').value=p.venc||'';
+  document.getElementById('mStatus').value=p.status;
+  document.getElementById('mObs').value=p.obs||'';
+  document.getElementById('delBtn').style.display='';
   document.getElementById('modal').classList.add('open');
 }
 
 function closeModal() { document.getElementById('modal').classList.remove('open'); }
 
-function saveTask() {
-  const name = document.getElementById('mName').value.trim();
-  const start = document.getElementById('mStart').value;
-  const end = document.getElementById('mEnd').value;
-  if (!name || !start || !end) { alert('Preencha nome, início e fim'); return; }
-  const data = {
-    proj: document.getElementById('mProj').value,
-    name, start, end,
-    status: document.getElementById('mStatus').value,
-    owner: document.getElementById('mOwner').value.trim(),
-    obs: document.getElementById('mObs').value.trim(),
+function savePag() {
+  const data={
+    forn:document.getElementById('mForn').value,
+    desc:document.getElementById('mDesc').value.trim(),
+    valor:parseFloat(document.getElementById('mValor').value)||0,
+    venc:document.getElementById('mVenc').value,
+    status:document.getElementById('mStatus').value,
+    obs:document.getElementById('mObs').value.trim(),
   };
-  if (editId) {
-    const idx = tasks.findIndex(x => x.id === editId);
-    tasks[idx] = { ...tasks[idx], ...data };
+  if(!data.desc){alert('Preencha a descrição');return;}
+  if(editId){
+    const idx=pagamentos.findIndex(x=>x.id===editId);
+    pagamentos[idx]={...pagamentos[idx],...data};
   } else {
-    tasks.push({ id: nextId++, ...data });
+    pagamentos.push({id:nextId++,...data});
   }
-  closeModal(); refresh(); saveToGitHub();
+  closeModal(); refresh(); persistPagamentos(); saveToGitHub();
 }
 
-function deleteTask() {
-  if (!confirm('Remover esta tarefa?')) return;
-  deleteTaskById(editId);
-  closeModal();
+function deletePag(){if(confirm('Remover?')){pagamentos=pagamentos.filter(x=>x.id!==editId);closeModal();refresh();persistPagamentos();saveToGitHub();}}
+
+function refresh(){
+  if(currentTab==='pagamentos') renderPagamentos();
+  if(currentTab==='fluxo') renderFluxo();
+  if(currentTab==='fornecedores') renderFornecedores();
 }
 
-function deleteTaskById(id) {
-  tasks = tasks.filter(x => x.id !== id);
-  refresh(); saveToGitHub();
-}
+renderPagamentos();
 
-function refresh() {
-  if (currentTab === 'gantt') renderGantt();
-  if (currentTab === 'resumo') renderResumo();
-  if (currentTab === 'checklist') renderChecklist();
-}
-
-// Tooltip
-function showTT(e, id) {
-  const t = tasks.find(x => x.id === id);
-  if (!t) return;
-  const proj = PROJ[t.proj];
-  const st = effectiveStatus(t);
-  const tt = document.getElementById('tooltip');
-  tt.innerHTML = `<strong>${t.name}</strong><br>
-    <span style="color:${proj.color}">${proj.label}</span><br>
-    📅 ${fmtDate(t.start)} → ${fmtDate(t.end)}<br>
-    ${t.status !== 'milestone' ? `🔵 ${STATUS_LBL[st] || st}<br>` : ''}
-    ${t.owner ? `👤 ${t.owner}<br>` : ''}
-    ${t.obs ? `<em style="color:#64748b;font-size:0.65rem">${t.obs}</em>` : ''}`;
-  tt.style.display = 'block';
-  moveTT(e);
-}
-function moveTT(e) {
-  const tt = document.getElementById('tooltip');
-  tt.style.left = (e.clientX + 14) + 'px';
-  tt.style.top = (e.clientY + 14) + 'px';
-}
-function hideTT() { document.getElementById('tooltip').style.display = 'none'; }
-
-window.addEventListener('DOMContentLoaded', function() { renderGantt(); });
-setTimeout(function() { if (!document.getElementById('ganttContainer').innerHTML.trim()) renderGantt(); }, 300);
+// ===== AUTO-SAVE GITHUB =====
 const GH_OWNER = 'gabrielzanandrea';
-const GH_REPO  = 'grantt';
+const GH_REPO  = 'financeiro';
 const GH_FILE  = 'index.html';
 
 let GH_TOKEN = sessionStorage.getItem('gh_token') || '';
@@ -1047,4 +586,6 @@ function showSaveIndicator(state, msg) {
 }
 // ===== FIM AUTO-SAVE =====
 </script>
-<div id="_gh_indicator" style="position: fixed; bottom: 16px; right: 16px; padding: 7px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; z-index: 9999; transition: opacity 0.4s; pointer-events: none; max-width: 300px; opacity: 1; background: rgb(30, 41, 59); color: rgb(148, 163, 184); border: 1px solid rgb(51, 65, 85);">⏳ Salvando no GitHub...</div></body></html>
+
+
+</body></html>
